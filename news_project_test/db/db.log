@@ -1,0 +1,1365 @@
+2026-10-13 23:41:06,844 | INFO | Dummy-1 | 실행 시작: reconnect_news_database
+2026-10-13 23:41:06,921 | ERROR | Dummy-1 | 실행 오류: reconnect_news_database
+Traceback (most recent call last):
+  File "C:\Users\yohan\AppData\Local\Programs\Python\Python314\Lib\asyncio\windows_events.py", line 463, in finish_socket_func
+    return ov.getresult()
+           ~~~~~~~~~~~~^^
+OSError: [WinError 64] 지정된 네트워크 이름을 더 이상 사용할 수 없습니다
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\yohan\AppData\Local\Programs\Python\Python314\Lib\asyncio\proactor_events.py", line 286, in _loop_reading
+    length = fut.result()
+  File "C:\Users\yohan\AppData\Local\Programs\Python\Python314\Lib\asyncio\windows_events.py", line 804, in _poll
+    value = callback(transferred, key, ov)
+  File "C:\Users\yohan\AppData\Local\Programs\Python\Python314\Lib\asyncio\windows_events.py", line 467, in finish_socket_func
+    raise ConnectionResetError(*exc.args)
+ConnectionResetError: [WinError 64] 지정된 네트워크 이름을 더 이상 사용할 수 없습니다
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\yohan\OneDrive\Doccument\2026_2_i-Keeper_Project\news_project_test\db\setting\common.py", line 50, in asynchronous
+    result = await function(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\yohan\OneDrive\Doccument\2026_2_i-Keeper_Project\news_project_test\db\setting.py", line 83, in reconnect_news_database
+    connection = await asyncpg.connect(
+                 ^^^^^^^^^^^^^^^^^^^^^^
+        host=host, port=port, user=user, password=password, database=database, timeout=timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\yohan\AppData\Local\Programs\Python\Python314\Lib\site-packages\asyncpg\connection.py", line 2443, in connect
+    return await connect_utils._connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<22 lines>...
+    )
+    ^
+  File "C:\Users\yohan\AppData\Local\Programs\Python\Python314\Lib\site-packages\asyncpg\connect_utils.py", line 1218, in _connect
+    conn = await _connect_addr(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\yohan\AppData\Local\Programs\Python\Python314\Lib\site-packages\asyncpg\connect_utils.py", line 1054, in _connect_addr
+    return await __connect_addr(params, True, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yohan\AppData\Local\Programs\Python\Python314\Lib\site-packages\asyncpg\connect_utils.py", line 1102, in __connect_addr
+    await connected
+asyncpg.exceptions.ConnectionDoesNotExistError: connection was closed in the middle of operation
+2026-10-13 23:41:06,933 | INFO | Dummy-1 | 기존 DB 재연결 실패. 초기 연결 경로로 전환: ConnectionDoesNotExistError
+2026-10-13 23:41:06,933 | INFO | Dummy-1 | 실행 시작: initial_connect_news_database
+2026-10-13 23:41:06,934 | INFO | asyncio_0 | 실행 시작: step_1_prepare_server
+2026-10-13 23:41:06,934 | INFO | asyncio_0 | 1.2 기존 PostgreSQL 클러스터 사용: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:41:06,934 | INFO | asyncio_0 | 실행 완료: step_1_prepare_server
+2026-10-13 23:41:06,934 | INFO | Dummy-1 | 실행 시작: step_2_connect_server
+2026-10-13 23:41:06,973 | INFO | Dummy-1 | 2. 서버 접속 성공
+2026-10-13 23:41:06,974 | INFO | Dummy-1 | 실행 시작: _verify_directory
+2026-10-13 23:41:06,976 | INFO | Dummy-1 | 실행 완료: _verify_directory
+2026-10-13 23:41:06,976 | INFO | Dummy-1 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:41:06,991 | INFO | Dummy-1 | 데이터베이스 생성: News_Data_Server
+2026-10-13 23:41:07,600 | INFO | Dummy-1 | 실행 시작: _verify_directory
+2026-10-13 23:41:07,600 | INFO | Dummy-1 | 실행 완료: _verify_directory
+2026-10-13 23:41:07,601 | INFO | Dummy-1 | 실행 완료: step_2_connect_server
+2026-10-13 23:41:07,607 | INFO | Dummy-1 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:41:07,785 | INFO | Dummy-1 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:41:07,944 | INFO | Dummy-1 | 3.1 누락 테이블 생성: public.news_id
+2026-10-13 23:41:07,961 | INFO | Dummy-1 | 3.1 누락 테이블 생성: public.publishers
+2026-10-13 23:41:07,964 | INFO | Dummy-1 | 3.1 누락 테이블 생성: public.categories
+2026-10-13 23:41:07,968 | INFO | Dummy-1 | 인덱스 생성: CREATE UNIQUE INDEX uq_categories_root_name ON public.categories(name) WHERE parent_id IS NULL
+2026-10-13 23:41:07,969 | INFO | Dummy-1 | 3.1 누락 테이블 생성: public.keywords
+2026-10-13 23:41:07,971 | INFO | Dummy-1 | 3.1 누락 테이블 생성: public.embedding_models
+2026-10-13 23:41:07,974 | INFO | Dummy-1 | 3.1 누락 테이블 생성: public.today_news
+2026-10-13 23:41:07,978 | INFO | Dummy-1 | 인덱스 생성: CREATE INDEX ix_today_news_published_at ON public.today_news(published_at)
+2026-10-13 23:41:07,979 | INFO | Dummy-1 | 인덱스 생성: CREATE UNIQUE INDEX uq_today_news_url ON public.today_news(url)
+2026-10-13 23:41:07,980 | INFO | Dummy-1 | 3.1 누락 테이블 생성: public.news
+2026-10-13 23:41:07,983 | INFO | Dummy-1 | 인덱스 생성: CREATE INDEX ix_news_published_at ON public.news(published_at)
+2026-10-13 23:41:07,984 | INFO | Dummy-1 | 3.1 누락 테이블 생성: public.old_news
+2026-10-13 23:41:07,987 | INFO | Dummy-1 | 인덱스 생성: CREATE INDEX ix_old_news_published_at ON public.old_news(published_at)
+2026-10-13 23:41:07,988 | INFO | Dummy-1 | 3.1 누락 테이블 생성: public.news_location
+2026-10-13 23:41:07,991 | INFO | Dummy-1 | 3.1 누락 테이블 생성: public.news_keywords
+2026-10-13 23:41:07,995 | INFO | Dummy-1 | 인덱스 생성: CREATE INDEX ix_news_keywords_keyword ON public.news_keywords(keyword_id)
+2026-10-13 23:41:07,995 | INFO | Dummy-1 | 3.1 누락 테이블 생성: public.news_embeddings
+2026-10-13 23:41:07,997 | INFO | Dummy-1 | 3.1 누락 테이블 생성: public.news_embedding_locator
+2026-10-13 23:41:07,999 | INFO | Dummy-1 | 3.1 누락 테이블 생성: public.learning_data_news
+2026-10-13 23:41:08,001 | INFO | Dummy-1 | 3.1 누락 테이블 생성: analysis.analysis_runs
+2026-10-13 23:41:08,005 | INFO | Dummy-1 | 3.1 누락 테이블 생성: analysis.analysis_overview
+2026-10-13 23:41:08,006 | INFO | Dummy-1 | 3.1 누락 테이블 생성: analysis.analysis_keyword_stats
+2026-10-13 23:41:08,009 | INFO | Dummy-1 | 3.1 누락 테이블 생성: analysis.analysis_category_stats
+2026-10-13 23:41:08,010 | INFO | Dummy-1 | 3.1 누락 테이블 생성: analysis.analysis_publisher_stats
+2026-10-13 23:41:08,012 | INFO | Dummy-1 | 3.1 누락 테이블 생성: analysis.analysis_author_stats
+2026-10-13 23:41:08,014 | INFO | Dummy-1 | 3.1 누락 테이블 생성: analysis.analysis_time_buckets
+2026-10-13 23:41:08,015 | INFO | Dummy-1 | 3.1 누락 테이블 생성: analysis.analysis_issues
+2026-10-13 23:41:08,019 | INFO | Dummy-1 | 3.1 누락 테이블 생성: analysis.analysis_issue_members
+2026-10-13 23:41:08,021 | INFO | Dummy-1 | 인덱스 생성: CREATE INDEX ix_issue_members_news ON analysis.analysis_issue_members(news_id)
+2026-10-13 23:41:08,022 | INFO | Dummy-1 | 3.1 누락 테이블 생성: analysis.analysis_issue_keywords
+2026-10-13 23:41:08,025 | INFO | Dummy-1 | 3.1 누락 테이블 생성: analysis.analysis_issue_timeseries
+2026-10-13 23:41:08,026 | INFO | Dummy-1 | 3.1 누락 테이블 생성: analysis.analysis_similar_news
+2026-10-13 23:41:08,037 | INFO | Dummy-1 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:41:08,037 | INFO | Dummy-1 | 연도 파티션 생성: public.news_embeddings_2025
+2026-10-13 23:41:08,041 | INFO | Dummy-1 | 연도 파티션 생성: public.news_embeddings_2026
+2026-10-13 23:41:08,045 | INFO | Dummy-1 | 연도 파티션 생성: public.news_embeddings_2027
+2026-10-13 23:41:08,048 | INFO | Dummy-1 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:41:08,050 | INFO | Dummy-1 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:41:08,056 | INFO | Dummy-1 | 실행 완료: initial_connect_news_database
+2026-10-13 23:43:14,984 | INFO | Dummy-3 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:15,026 | INFO | Dummy-3 | 실행 시작: _verify_directory
+2026-10-13 23:43:15,026 | INFO | Dummy-3 | 실행 완료: _verify_directory
+2026-10-13 23:43:15,026 | INFO | Dummy-3 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:15,027 | INFO | Dummy-3 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:15,033 | INFO | Dummy-3 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:15,034 | INFO | Dummy-3 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:15,034 | INFO | Dummy-3 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:15,034 | INFO | Dummy-3 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:15,034 | INFO | Dummy-3 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:15,034 | INFO | Dummy-3 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:15,034 | INFO | Dummy-3 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:15,034 | INFO | Dummy-3 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:15,034 | INFO | Dummy-3 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:15,035 | INFO | Dummy-3 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:15,035 | INFO | Dummy-3 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:15,035 | INFO | Dummy-3 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:15,035 | INFO | Dummy-3 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:15,035 | INFO | Dummy-3 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:15,035 | INFO | Dummy-3 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:15,035 | INFO | Dummy-3 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:15,035 | INFO | Dummy-3 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:15,035 | INFO | Dummy-3 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:15,035 | INFO | Dummy-3 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:15,035 | INFO | Dummy-3 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:15,035 | INFO | Dummy-3 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:15,035 | INFO | Dummy-3 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:15,035 | INFO | Dummy-3 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:15,036 | INFO | Dummy-3 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:15,036 | INFO | Dummy-3 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:15,036 | INFO | Dummy-3 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:15,053 | INFO | Dummy-3 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:15,053 | INFO | Dummy-3 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:15,054 | INFO | Dummy-3 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:15,055 | INFO | Dummy-3 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:15,055 | INFO | Dummy-3 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:15,056 | INFO | Dummy-3 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:15,059 | INFO | Dummy-3 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:16,112 | INFO | Dummy-5 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:16,262 | INFO | Dummy-5 | 실행 시작: _verify_directory
+2026-10-13 23:43:16,263 | INFO | Dummy-5 | 실행 완료: _verify_directory
+2026-10-13 23:43:16,263 | INFO | Dummy-5 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:16,263 | INFO | Dummy-5 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:16,269 | INFO | Dummy-5 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:16,270 | INFO | Dummy-5 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:16,270 | INFO | Dummy-5 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:16,270 | INFO | Dummy-5 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:16,270 | INFO | Dummy-5 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:16,270 | INFO | Dummy-5 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:16,271 | INFO | Dummy-5 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:16,271 | INFO | Dummy-5 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:16,271 | INFO | Dummy-5 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:16,271 | INFO | Dummy-5 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:16,271 | INFO | Dummy-5 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:16,271 | INFO | Dummy-5 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:16,271 | INFO | Dummy-5 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:16,271 | INFO | Dummy-5 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:16,271 | INFO | Dummy-5 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:16,271 | INFO | Dummy-5 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:16,271 | INFO | Dummy-5 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:16,272 | INFO | Dummy-5 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:16,272 | INFO | Dummy-5 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:16,272 | INFO | Dummy-5 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:16,272 | INFO | Dummy-5 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:16,272 | INFO | Dummy-5 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:16,272 | INFO | Dummy-5 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:16,272 | INFO | Dummy-5 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:16,272 | INFO | Dummy-5 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:16,272 | INFO | Dummy-5 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:16,285 | INFO | Dummy-5 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:16,285 | INFO | Dummy-5 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:16,287 | INFO | Dummy-5 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:16,287 | INFO | Dummy-5 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:16,287 | INFO | Dummy-5 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:16,288 | INFO | Dummy-5 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:16,291 | INFO | Dummy-5 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:22,947 | INFO | Dummy-7 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:22,988 | INFO | Dummy-7 | 실행 시작: _verify_directory
+2026-10-13 23:43:22,989 | INFO | Dummy-7 | 실행 완료: _verify_directory
+2026-10-13 23:43:22,989 | INFO | Dummy-7 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:22,989 | INFO | Dummy-7 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:22,995 | INFO | Dummy-7 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:22,996 | INFO | Dummy-7 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:22,996 | INFO | Dummy-7 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:22,996 | INFO | Dummy-7 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:22,996 | INFO | Dummy-7 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:22,996 | INFO | Dummy-7 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:22,996 | INFO | Dummy-7 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:22,996 | INFO | Dummy-7 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:22,996 | INFO | Dummy-7 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:22,997 | INFO | Dummy-7 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:22,997 | INFO | Dummy-7 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:22,997 | INFO | Dummy-7 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:22,997 | INFO | Dummy-7 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:22,997 | INFO | Dummy-7 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:22,997 | INFO | Dummy-7 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:22,997 | INFO | Dummy-7 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:22,997 | INFO | Dummy-7 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:22,997 | INFO | Dummy-7 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:22,997 | INFO | Dummy-7 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:22,997 | INFO | Dummy-7 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:22,997 | INFO | Dummy-7 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:22,997 | INFO | Dummy-7 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:22,997 | INFO | Dummy-7 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:22,998 | INFO | Dummy-7 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:22,998 | INFO | Dummy-7 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:22,998 | INFO | Dummy-7 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:23,009 | INFO | Dummy-7 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:23,009 | INFO | Dummy-7 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:23,011 | INFO | Dummy-7 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:23,011 | INFO | Dummy-7 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:23,011 | INFO | Dummy-7 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:23,012 | INFO | Dummy-7 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:23,015 | INFO | Dummy-7 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:30,474 | INFO | Dummy-9 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:30,515 | INFO | Dummy-9 | 실행 시작: _verify_directory
+2026-10-13 23:43:30,516 | INFO | Dummy-9 | 실행 완료: _verify_directory
+2026-10-13 23:43:30,516 | INFO | Dummy-9 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:30,517 | INFO | Dummy-9 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:30,523 | INFO | Dummy-9 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:30,523 | INFO | Dummy-9 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:30,523 | INFO | Dummy-9 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:30,524 | INFO | Dummy-9 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:30,524 | INFO | Dummy-9 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:30,524 | INFO | Dummy-9 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:30,524 | INFO | Dummy-9 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:30,524 | INFO | Dummy-9 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:30,524 | INFO | Dummy-9 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:30,524 | INFO | Dummy-9 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:30,524 | INFO | Dummy-9 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:30,525 | INFO | Dummy-9 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:30,525 | INFO | Dummy-9 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:30,525 | INFO | Dummy-9 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:30,525 | INFO | Dummy-9 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:30,525 | INFO | Dummy-9 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:30,525 | INFO | Dummy-9 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:30,525 | INFO | Dummy-9 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:30,525 | INFO | Dummy-9 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:30,525 | INFO | Dummy-9 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:30,525 | INFO | Dummy-9 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:30,525 | INFO | Dummy-9 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:30,525 | INFO | Dummy-9 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:30,525 | INFO | Dummy-9 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:30,526 | INFO | Dummy-9 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:30,526 | INFO | Dummy-9 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:30,541 | INFO | Dummy-9 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:30,541 | INFO | Dummy-9 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:30,543 | INFO | Dummy-9 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:30,543 | INFO | Dummy-9 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:30,543 | INFO | Dummy-9 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:30,544 | INFO | Dummy-9 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:30,549 | INFO | Dummy-9 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:31,048 | INFO | Dummy-11 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:31,200 | INFO | Dummy-11 | 실행 시작: _verify_directory
+2026-10-13 23:43:31,201 | INFO | Dummy-11 | 실행 완료: _verify_directory
+2026-10-13 23:43:31,201 | INFO | Dummy-11 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:31,201 | INFO | Dummy-11 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:31,207 | INFO | Dummy-11 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:31,207 | INFO | Dummy-11 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:31,207 | INFO | Dummy-11 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:31,208 | INFO | Dummy-11 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:31,208 | INFO | Dummy-11 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:31,208 | INFO | Dummy-11 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:31,208 | INFO | Dummy-11 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:31,208 | INFO | Dummy-11 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:31,208 | INFO | Dummy-11 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:31,208 | INFO | Dummy-11 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:31,208 | INFO | Dummy-11 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:31,208 | INFO | Dummy-11 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:31,208 | INFO | Dummy-11 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:31,208 | INFO | Dummy-11 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:31,209 | INFO | Dummy-11 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:31,209 | INFO | Dummy-11 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:31,209 | INFO | Dummy-11 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:31,209 | INFO | Dummy-11 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:31,209 | INFO | Dummy-11 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:31,209 | INFO | Dummy-11 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:31,209 | INFO | Dummy-11 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:31,209 | INFO | Dummy-11 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:31,209 | INFO | Dummy-11 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:31,209 | INFO | Dummy-11 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:31,209 | INFO | Dummy-11 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:31,209 | INFO | Dummy-11 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:31,221 | INFO | Dummy-11 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:31,221 | INFO | Dummy-11 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:31,222 | INFO | Dummy-11 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:31,223 | INFO | Dummy-11 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:31,223 | INFO | Dummy-11 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:31,223 | INFO | Dummy-11 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:31,226 | INFO | Dummy-11 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:31,624 | INFO | Dummy-13 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:31,664 | INFO | Dummy-13 | 실행 시작: _verify_directory
+2026-10-13 23:43:31,665 | INFO | Dummy-13 | 실행 완료: _verify_directory
+2026-10-13 23:43:31,665 | INFO | Dummy-13 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:31,665 | INFO | Dummy-13 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:31,671 | INFO | Dummy-13 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:31,672 | INFO | Dummy-13 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:31,672 | INFO | Dummy-13 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:31,672 | INFO | Dummy-13 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:31,672 | INFO | Dummy-13 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:31,672 | INFO | Dummy-13 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:31,672 | INFO | Dummy-13 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:31,672 | INFO | Dummy-13 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:31,672 | INFO | Dummy-13 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:31,672 | INFO | Dummy-13 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:31,673 | INFO | Dummy-13 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:31,673 | INFO | Dummy-13 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:31,673 | INFO | Dummy-13 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:31,673 | INFO | Dummy-13 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:31,673 | INFO | Dummy-13 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:31,673 | INFO | Dummy-13 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:31,673 | INFO | Dummy-13 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:31,673 | INFO | Dummy-13 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:31,673 | INFO | Dummy-13 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:31,673 | INFO | Dummy-13 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:31,673 | INFO | Dummy-13 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:31,673 | INFO | Dummy-13 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:31,673 | INFO | Dummy-13 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:31,673 | INFO | Dummy-13 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:31,674 | INFO | Dummy-13 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:31,674 | INFO | Dummy-13 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:31,685 | INFO | Dummy-13 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:31,685 | INFO | Dummy-13 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:31,687 | INFO | Dummy-13 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:31,687 | INFO | Dummy-13 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:31,687 | INFO | Dummy-13 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:31,688 | INFO | Dummy-13 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:31,691 | INFO | Dummy-13 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:32,001 | INFO | Dummy-15 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:32,041 | INFO | Dummy-15 | 실행 시작: _verify_directory
+2026-10-13 23:43:32,042 | INFO | Dummy-15 | 실행 완료: _verify_directory
+2026-10-13 23:43:32,042 | INFO | Dummy-15 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:32,042 | INFO | Dummy-15 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:32,048 | INFO | Dummy-15 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:32,049 | INFO | Dummy-15 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:32,049 | INFO | Dummy-15 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:32,049 | INFO | Dummy-15 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:32,049 | INFO | Dummy-15 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:32,049 | INFO | Dummy-15 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:32,050 | INFO | Dummy-15 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:32,050 | INFO | Dummy-15 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:32,050 | INFO | Dummy-15 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:32,050 | INFO | Dummy-15 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:32,050 | INFO | Dummy-15 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:32,050 | INFO | Dummy-15 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:32,050 | INFO | Dummy-15 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:32,050 | INFO | Dummy-15 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:32,050 | INFO | Dummy-15 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:32,050 | INFO | Dummy-15 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:32,050 | INFO | Dummy-15 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:32,051 | INFO | Dummy-15 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:32,051 | INFO | Dummy-15 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:32,051 | INFO | Dummy-15 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:32,051 | INFO | Dummy-15 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:32,051 | INFO | Dummy-15 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:32,051 | INFO | Dummy-15 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:32,051 | INFO | Dummy-15 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:32,051 | INFO | Dummy-15 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:32,051 | INFO | Dummy-15 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:32,061 | INFO | Dummy-15 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:32,061 | INFO | Dummy-15 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:32,062 | INFO | Dummy-15 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:32,062 | INFO | Dummy-15 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:32,062 | INFO | Dummy-15 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:32,063 | INFO | Dummy-15 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:32,067 | INFO | Dummy-15 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:32,371 | INFO | Dummy-17 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:32,411 | INFO | Dummy-17 | 실행 시작: _verify_directory
+2026-10-13 23:43:32,411 | INFO | Dummy-17 | 실행 완료: _verify_directory
+2026-10-13 23:43:32,412 | INFO | Dummy-17 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:32,412 | INFO | Dummy-17 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:32,417 | INFO | Dummy-17 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:32,418 | INFO | Dummy-17 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:32,418 | INFO | Dummy-17 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:32,418 | INFO | Dummy-17 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:32,418 | INFO | Dummy-17 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:32,418 | INFO | Dummy-17 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:32,419 | INFO | Dummy-17 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:32,419 | INFO | Dummy-17 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:32,419 | INFO | Dummy-17 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:32,419 | INFO | Dummy-17 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:32,419 | INFO | Dummy-17 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:32,419 | INFO | Dummy-17 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:32,419 | INFO | Dummy-17 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:32,419 | INFO | Dummy-17 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:32,420 | INFO | Dummy-17 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:32,420 | INFO | Dummy-17 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:32,420 | INFO | Dummy-17 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:32,420 | INFO | Dummy-17 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:32,420 | INFO | Dummy-17 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:32,420 | INFO | Dummy-17 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:32,420 | INFO | Dummy-17 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:32,421 | INFO | Dummy-17 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:32,421 | INFO | Dummy-17 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:32,421 | INFO | Dummy-17 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:32,421 | INFO | Dummy-17 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:32,421 | INFO | Dummy-17 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:32,431 | INFO | Dummy-17 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:32,431 | INFO | Dummy-17 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:32,433 | INFO | Dummy-17 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:32,433 | INFO | Dummy-17 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:32,433 | INFO | Dummy-17 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:32,434 | INFO | Dummy-17 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:32,437 | INFO | Dummy-17 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:32,737 | INFO | Dummy-19 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:32,778 | INFO | Dummy-19 | 실행 시작: _verify_directory
+2026-10-13 23:43:32,778 | INFO | Dummy-19 | 실행 완료: _verify_directory
+2026-10-13 23:43:32,778 | INFO | Dummy-19 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:32,779 | INFO | Dummy-19 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:32,784 | INFO | Dummy-19 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:32,785 | INFO | Dummy-19 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:32,785 | INFO | Dummy-19 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:32,785 | INFO | Dummy-19 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:32,785 | INFO | Dummy-19 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:32,785 | INFO | Dummy-19 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:32,785 | INFO | Dummy-19 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:32,785 | INFO | Dummy-19 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:32,785 | INFO | Dummy-19 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:32,785 | INFO | Dummy-19 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:32,786 | INFO | Dummy-19 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:32,786 | INFO | Dummy-19 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:32,786 | INFO | Dummy-19 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:32,786 | INFO | Dummy-19 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:32,786 | INFO | Dummy-19 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:32,786 | INFO | Dummy-19 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:32,786 | INFO | Dummy-19 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:32,786 | INFO | Dummy-19 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:32,786 | INFO | Dummy-19 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:32,786 | INFO | Dummy-19 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:32,786 | INFO | Dummy-19 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:32,786 | INFO | Dummy-19 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:32,786 | INFO | Dummy-19 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:32,787 | INFO | Dummy-19 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:32,787 | INFO | Dummy-19 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:32,787 | INFO | Dummy-19 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:32,797 | INFO | Dummy-19 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:32,798 | INFO | Dummy-19 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:32,799 | INFO | Dummy-19 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:32,799 | INFO | Dummy-19 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:32,800 | INFO | Dummy-19 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:32,800 | INFO | Dummy-19 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:32,804 | INFO | Dummy-19 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:33,115 | INFO | Dummy-21 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:33,155 | INFO | Dummy-21 | 실행 시작: _verify_directory
+2026-10-13 23:43:33,156 | INFO | Dummy-21 | 실행 완료: _verify_directory
+2026-10-13 23:43:33,156 | INFO | Dummy-21 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:33,156 | INFO | Dummy-21 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:33,162 | INFO | Dummy-21 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:33,163 | INFO | Dummy-21 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:33,163 | INFO | Dummy-21 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:33,163 | INFO | Dummy-21 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:33,163 | INFO | Dummy-21 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:33,163 | INFO | Dummy-21 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:33,163 | INFO | Dummy-21 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:33,163 | INFO | Dummy-21 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:33,163 | INFO | Dummy-21 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:33,164 | INFO | Dummy-21 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:33,164 | INFO | Dummy-21 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:33,164 | INFO | Dummy-21 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:33,164 | INFO | Dummy-21 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:33,164 | INFO | Dummy-21 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:33,164 | INFO | Dummy-21 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:33,164 | INFO | Dummy-21 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:33,164 | INFO | Dummy-21 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:33,164 | INFO | Dummy-21 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:33,164 | INFO | Dummy-21 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:33,164 | INFO | Dummy-21 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:33,164 | INFO | Dummy-21 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:33,164 | INFO | Dummy-21 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:33,164 | INFO | Dummy-21 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:33,164 | INFO | Dummy-21 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:33,165 | INFO | Dummy-21 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:33,165 | INFO | Dummy-21 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:33,176 | INFO | Dummy-21 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:33,177 | INFO | Dummy-21 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:33,178 | INFO | Dummy-21 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:33,178 | INFO | Dummy-21 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:33,179 | INFO | Dummy-21 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:33,179 | INFO | Dummy-21 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:33,183 | INFO | Dummy-21 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:33,500 | INFO | Dummy-23 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:33,541 | INFO | Dummy-23 | 실행 시작: _verify_directory
+2026-10-13 23:43:33,541 | INFO | Dummy-23 | 실행 완료: _verify_directory
+2026-10-13 23:43:33,542 | INFO | Dummy-23 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:33,542 | INFO | Dummy-23 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:33,547 | INFO | Dummy-23 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:33,548 | INFO | Dummy-23 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:33,548 | INFO | Dummy-23 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:33,548 | INFO | Dummy-23 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:33,548 | INFO | Dummy-23 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:33,548 | INFO | Dummy-23 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:33,548 | INFO | Dummy-23 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:33,549 | INFO | Dummy-23 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:33,549 | INFO | Dummy-23 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:33,549 | INFO | Dummy-23 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:33,549 | INFO | Dummy-23 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:33,549 | INFO | Dummy-23 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:33,549 | INFO | Dummy-23 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:33,549 | INFO | Dummy-23 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:33,550 | INFO | Dummy-23 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:33,550 | INFO | Dummy-23 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:33,550 | INFO | Dummy-23 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:33,550 | INFO | Dummy-23 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:33,550 | INFO | Dummy-23 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:33,550 | INFO | Dummy-23 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:33,550 | INFO | Dummy-23 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:33,550 | INFO | Dummy-23 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:33,550 | INFO | Dummy-23 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:33,550 | INFO | Dummy-23 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:33,551 | INFO | Dummy-23 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:33,551 | INFO | Dummy-23 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:33,562 | INFO | Dummy-23 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:33,563 | INFO | Dummy-23 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:33,564 | INFO | Dummy-23 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:33,564 | INFO | Dummy-23 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:33,564 | INFO | Dummy-23 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:33,565 | INFO | Dummy-23 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:33,569 | INFO | Dummy-23 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:33,888 | INFO | Dummy-25 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:34,031 | INFO | Dummy-25 | 실행 시작: _verify_directory
+2026-10-13 23:43:34,032 | INFO | Dummy-25 | 실행 완료: _verify_directory
+2026-10-13 23:43:34,032 | INFO | Dummy-25 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:34,032 | INFO | Dummy-25 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:34,038 | INFO | Dummy-25 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:34,039 | INFO | Dummy-25 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:34,039 | INFO | Dummy-25 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:34,039 | INFO | Dummy-25 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:34,039 | INFO | Dummy-25 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:34,039 | INFO | Dummy-25 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:34,040 | INFO | Dummy-25 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:34,040 | INFO | Dummy-25 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:34,040 | INFO | Dummy-25 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:34,040 | INFO | Dummy-25 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:34,040 | INFO | Dummy-25 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:34,040 | INFO | Dummy-25 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:34,040 | INFO | Dummy-25 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:34,041 | INFO | Dummy-25 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:34,041 | INFO | Dummy-25 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:34,041 | INFO | Dummy-25 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:34,041 | INFO | Dummy-25 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:34,041 | INFO | Dummy-25 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:34,041 | INFO | Dummy-25 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:34,041 | INFO | Dummy-25 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:34,041 | INFO | Dummy-25 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:34,041 | INFO | Dummy-25 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:34,042 | INFO | Dummy-25 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:34,042 | INFO | Dummy-25 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:34,042 | INFO | Dummy-25 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:34,042 | INFO | Dummy-25 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:34,052 | INFO | Dummy-25 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:34,053 | INFO | Dummy-25 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:34,054 | INFO | Dummy-25 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:34,054 | INFO | Dummy-25 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:34,054 | INFO | Dummy-25 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:34,055 | INFO | Dummy-25 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:34,060 | INFO | Dummy-25 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:34,282 | INFO | Dummy-27 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:34,321 | INFO | Dummy-27 | 실행 시작: _verify_directory
+2026-10-13 23:43:34,321 | INFO | Dummy-27 | 실행 완료: _verify_directory
+2026-10-13 23:43:34,322 | INFO | Dummy-27 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:34,322 | INFO | Dummy-27 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:34,328 | INFO | Dummy-27 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:34,328 | INFO | Dummy-27 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:34,328 | INFO | Dummy-27 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:34,328 | INFO | Dummy-27 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:34,329 | INFO | Dummy-27 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:34,329 | INFO | Dummy-27 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:34,329 | INFO | Dummy-27 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:34,329 | INFO | Dummy-27 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:34,329 | INFO | Dummy-27 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:34,329 | INFO | Dummy-27 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:34,329 | INFO | Dummy-27 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:34,329 | INFO | Dummy-27 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:34,329 | INFO | Dummy-27 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:34,329 | INFO | Dummy-27 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:34,329 | INFO | Dummy-27 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:34,329 | INFO | Dummy-27 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:34,330 | INFO | Dummy-27 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:34,330 | INFO | Dummy-27 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:34,330 | INFO | Dummy-27 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:34,330 | INFO | Dummy-27 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:34,330 | INFO | Dummy-27 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:34,330 | INFO | Dummy-27 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:34,330 | INFO | Dummy-27 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:34,330 | INFO | Dummy-27 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:34,330 | INFO | Dummy-27 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:34,331 | INFO | Dummy-27 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:34,342 | INFO | Dummy-27 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:34,342 | INFO | Dummy-27 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:34,344 | INFO | Dummy-27 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:34,344 | INFO | Dummy-27 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:34,344 | INFO | Dummy-27 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:34,345 | INFO | Dummy-27 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:34,347 | INFO | Dummy-27 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:34,680 | INFO | Dummy-29 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:34,721 | INFO | Dummy-29 | 실행 시작: _verify_directory
+2026-10-13 23:43:34,721 | INFO | Dummy-29 | 실행 완료: _verify_directory
+2026-10-13 23:43:34,722 | INFO | Dummy-29 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:34,722 | INFO | Dummy-29 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:34,727 | INFO | Dummy-29 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:34,728 | INFO | Dummy-29 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:34,728 | INFO | Dummy-29 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:34,728 | INFO | Dummy-29 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:34,728 | INFO | Dummy-29 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:34,728 | INFO | Dummy-29 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:34,728 | INFO | Dummy-29 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:34,729 | INFO | Dummy-29 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:34,729 | INFO | Dummy-29 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:34,729 | INFO | Dummy-29 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:34,729 | INFO | Dummy-29 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:34,729 | INFO | Dummy-29 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:34,729 | INFO | Dummy-29 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:34,729 | INFO | Dummy-29 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:34,729 | INFO | Dummy-29 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:34,729 | INFO | Dummy-29 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:34,729 | INFO | Dummy-29 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:34,729 | INFO | Dummy-29 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:34,729 | INFO | Dummy-29 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:34,729 | INFO | Dummy-29 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:34,730 | INFO | Dummy-29 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:34,730 | INFO | Dummy-29 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:34,730 | INFO | Dummy-29 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:34,730 | INFO | Dummy-29 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:34,730 | INFO | Dummy-29 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:34,730 | INFO | Dummy-29 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:34,741 | INFO | Dummy-29 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:34,741 | INFO | Dummy-29 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:34,743 | INFO | Dummy-29 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:34,743 | INFO | Dummy-29 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:34,743 | INFO | Dummy-29 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:34,744 | INFO | Dummy-29 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:34,747 | INFO | Dummy-29 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:35,056 | INFO | Dummy-31 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:35,096 | INFO | Dummy-31 | 실행 시작: _verify_directory
+2026-10-13 23:43:35,097 | INFO | Dummy-31 | 실행 완료: _verify_directory
+2026-10-13 23:43:35,097 | INFO | Dummy-31 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:35,097 | INFO | Dummy-31 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:35,103 | INFO | Dummy-31 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:35,104 | INFO | Dummy-31 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:35,104 | INFO | Dummy-31 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:35,104 | INFO | Dummy-31 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:35,104 | INFO | Dummy-31 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:35,104 | INFO | Dummy-31 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:35,104 | INFO | Dummy-31 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:35,104 | INFO | Dummy-31 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:35,104 | INFO | Dummy-31 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:35,104 | INFO | Dummy-31 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:35,104 | INFO | Dummy-31 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:35,104 | INFO | Dummy-31 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:35,104 | INFO | Dummy-31 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:35,105 | INFO | Dummy-31 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:35,105 | INFO | Dummy-31 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:35,105 | INFO | Dummy-31 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:35,105 | INFO | Dummy-31 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:35,105 | INFO | Dummy-31 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:35,105 | INFO | Dummy-31 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:35,105 | INFO | Dummy-31 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:35,105 | INFO | Dummy-31 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:35,105 | INFO | Dummy-31 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:35,105 | INFO | Dummy-31 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:35,106 | INFO | Dummy-31 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:35,106 | INFO | Dummy-31 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:35,106 | INFO | Dummy-31 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:35,118 | INFO | Dummy-31 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:35,118 | INFO | Dummy-31 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:35,120 | INFO | Dummy-31 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:35,120 | INFO | Dummy-31 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:35,120 | INFO | Dummy-31 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:35,121 | INFO | Dummy-31 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:35,125 | INFO | Dummy-31 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:35,448 | INFO | Dummy-33 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:35,489 | INFO | Dummy-33 | 실행 시작: _verify_directory
+2026-10-13 23:43:35,489 | INFO | Dummy-33 | 실행 완료: _verify_directory
+2026-10-13 23:43:35,489 | INFO | Dummy-33 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:35,489 | INFO | Dummy-33 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:35,495 | INFO | Dummy-33 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:35,496 | INFO | Dummy-33 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:35,496 | INFO | Dummy-33 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:35,496 | INFO | Dummy-33 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:35,496 | INFO | Dummy-33 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:35,496 | INFO | Dummy-33 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:35,496 | INFO | Dummy-33 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:35,496 | INFO | Dummy-33 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:35,497 | INFO | Dummy-33 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:35,497 | INFO | Dummy-33 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:35,497 | INFO | Dummy-33 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:35,497 | INFO | Dummy-33 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:35,497 | INFO | Dummy-33 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:35,497 | INFO | Dummy-33 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:35,497 | INFO | Dummy-33 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:35,497 | INFO | Dummy-33 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:35,497 | INFO | Dummy-33 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:35,497 | INFO | Dummy-33 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:35,497 | INFO | Dummy-33 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:35,497 | INFO | Dummy-33 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:35,497 | INFO | Dummy-33 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:35,497 | INFO | Dummy-33 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:35,497 | INFO | Dummy-33 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:35,498 | INFO | Dummy-33 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:35,498 | INFO | Dummy-33 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:35,498 | INFO | Dummy-33 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:35,508 | INFO | Dummy-33 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:35,509 | INFO | Dummy-33 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:35,510 | INFO | Dummy-33 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:35,510 | INFO | Dummy-33 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:35,511 | INFO | Dummy-33 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:35,511 | INFO | Dummy-33 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:35,515 | INFO | Dummy-33 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:35,834 | INFO | Dummy-35 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:35,874 | INFO | Dummy-35 | 실행 시작: _verify_directory
+2026-10-13 23:43:35,874 | INFO | Dummy-35 | 실행 완료: _verify_directory
+2026-10-13 23:43:35,874 | INFO | Dummy-35 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:35,874 | INFO | Dummy-35 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:35,880 | INFO | Dummy-35 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:35,881 | INFO | Dummy-35 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:35,881 | INFO | Dummy-35 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:35,881 | INFO | Dummy-35 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:35,881 | INFO | Dummy-35 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:35,881 | INFO | Dummy-35 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:35,881 | INFO | Dummy-35 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:35,881 | INFO | Dummy-35 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:35,882 | INFO | Dummy-35 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:35,882 | INFO | Dummy-35 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:35,882 | INFO | Dummy-35 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:35,882 | INFO | Dummy-35 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:35,882 | INFO | Dummy-35 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:35,882 | INFO | Dummy-35 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:35,882 | INFO | Dummy-35 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:35,882 | INFO | Dummy-35 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:35,883 | INFO | Dummy-35 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:35,883 | INFO | Dummy-35 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:35,883 | INFO | Dummy-35 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:35,883 | INFO | Dummy-35 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:35,883 | INFO | Dummy-35 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:35,883 | INFO | Dummy-35 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:35,883 | INFO | Dummy-35 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:35,883 | INFO | Dummy-35 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:35,883 | INFO | Dummy-35 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:35,883 | INFO | Dummy-35 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:35,893 | INFO | Dummy-35 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:35,893 | INFO | Dummy-35 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:35,894 | INFO | Dummy-35 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:35,895 | INFO | Dummy-35 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:35,895 | INFO | Dummy-35 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:35,895 | INFO | Dummy-35 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:35,898 | INFO | Dummy-35 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:36,217 | INFO | Dummy-37 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:36,365 | INFO | Dummy-37 | 실행 시작: _verify_directory
+2026-10-13 23:43:36,365 | INFO | Dummy-37 | 실행 완료: _verify_directory
+2026-10-13 23:43:36,366 | INFO | Dummy-37 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:36,366 | INFO | Dummy-37 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:36,372 | INFO | Dummy-37 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:36,372 | INFO | Dummy-37 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:36,373 | INFO | Dummy-37 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:36,373 | INFO | Dummy-37 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:36,373 | INFO | Dummy-37 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:36,373 | INFO | Dummy-37 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:36,373 | INFO | Dummy-37 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:36,373 | INFO | Dummy-37 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:36,373 | INFO | Dummy-37 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:36,373 | INFO | Dummy-37 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:36,373 | INFO | Dummy-37 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:36,373 | INFO | Dummy-37 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:36,373 | INFO | Dummy-37 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:36,373 | INFO | Dummy-37 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:36,373 | INFO | Dummy-37 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:36,373 | INFO | Dummy-37 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:36,374 | INFO | Dummy-37 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:36,374 | INFO | Dummy-37 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:36,374 | INFO | Dummy-37 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:36,374 | INFO | Dummy-37 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:36,374 | INFO | Dummy-37 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:36,374 | INFO | Dummy-37 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:36,374 | INFO | Dummy-37 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:36,374 | INFO | Dummy-37 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:36,374 | INFO | Dummy-37 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:36,374 | INFO | Dummy-37 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:36,386 | INFO | Dummy-37 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:36,386 | INFO | Dummy-37 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:36,388 | INFO | Dummy-37 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:36,388 | INFO | Dummy-37 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:36,388 | INFO | Dummy-37 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:36,389 | INFO | Dummy-37 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:36,392 | INFO | Dummy-37 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:36,620 | INFO | Dummy-39 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:36,659 | INFO | Dummy-39 | 실행 시작: _verify_directory
+2026-10-13 23:43:36,660 | INFO | Dummy-39 | 실행 완료: _verify_directory
+2026-10-13 23:43:36,660 | INFO | Dummy-39 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:36,660 | INFO | Dummy-39 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:36,666 | INFO | Dummy-39 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:36,667 | INFO | Dummy-39 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:36,667 | INFO | Dummy-39 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:36,667 | INFO | Dummy-39 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:36,667 | INFO | Dummy-39 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:36,667 | INFO | Dummy-39 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:36,667 | INFO | Dummy-39 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:36,667 | INFO | Dummy-39 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:36,668 | INFO | Dummy-39 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:36,668 | INFO | Dummy-39 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:36,668 | INFO | Dummy-39 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:36,668 | INFO | Dummy-39 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:36,668 | INFO | Dummy-39 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:36,668 | INFO | Dummy-39 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:36,668 | INFO | Dummy-39 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:36,668 | INFO | Dummy-39 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:36,668 | INFO | Dummy-39 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:36,668 | INFO | Dummy-39 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:36,668 | INFO | Dummy-39 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:36,668 | INFO | Dummy-39 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:36,668 | INFO | Dummy-39 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:36,668 | INFO | Dummy-39 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:36,669 | INFO | Dummy-39 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:36,669 | INFO | Dummy-39 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:36,669 | INFO | Dummy-39 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:36,669 | INFO | Dummy-39 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:36,681 | INFO | Dummy-39 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:36,681 | INFO | Dummy-39 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:36,682 | INFO | Dummy-39 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:36,682 | INFO | Dummy-39 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:36,683 | INFO | Dummy-39 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:36,683 | INFO | Dummy-39 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:36,687 | INFO | Dummy-39 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:37,047 | INFO | Dummy-41 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:37,086 | INFO | Dummy-41 | 실행 시작: _verify_directory
+2026-10-13 23:43:37,087 | INFO | Dummy-41 | 실행 완료: _verify_directory
+2026-10-13 23:43:37,087 | INFO | Dummy-41 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:37,087 | INFO | Dummy-41 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:37,093 | INFO | Dummy-41 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:37,093 | INFO | Dummy-41 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:37,093 | INFO | Dummy-41 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:37,094 | INFO | Dummy-41 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:37,094 | INFO | Dummy-41 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:37,094 | INFO | Dummy-41 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:37,094 | INFO | Dummy-41 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:37,094 | INFO | Dummy-41 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:37,094 | INFO | Dummy-41 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:37,094 | INFO | Dummy-41 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:37,094 | INFO | Dummy-41 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:37,094 | INFO | Dummy-41 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:37,094 | INFO | Dummy-41 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:37,095 | INFO | Dummy-41 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:37,095 | INFO | Dummy-41 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:37,095 | INFO | Dummy-41 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:37,095 | INFO | Dummy-41 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:37,095 | INFO | Dummy-41 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:37,095 | INFO | Dummy-41 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:37,095 | INFO | Dummy-41 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:37,095 | INFO | Dummy-41 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:37,095 | INFO | Dummy-41 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:37,095 | INFO | Dummy-41 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:37,096 | INFO | Dummy-41 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:37,096 | INFO | Dummy-41 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:37,096 | INFO | Dummy-41 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:37,106 | INFO | Dummy-41 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:37,106 | INFO | Dummy-41 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:37,107 | INFO | Dummy-41 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:37,108 | INFO | Dummy-41 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:37,108 | INFO | Dummy-41 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:37,108 | INFO | Dummy-41 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:37,112 | INFO | Dummy-41 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:37,444 | INFO | Dummy-43 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:37,486 | INFO | Dummy-43 | 실행 시작: _verify_directory
+2026-10-13 23:43:37,486 | INFO | Dummy-43 | 실행 완료: _verify_directory
+2026-10-13 23:43:37,486 | INFO | Dummy-43 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:37,486 | INFO | Dummy-43 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:37,493 | INFO | Dummy-43 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:37,494 | INFO | Dummy-43 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:37,494 | INFO | Dummy-43 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:37,494 | INFO | Dummy-43 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:37,494 | INFO | Dummy-43 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:37,494 | INFO | Dummy-43 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:37,494 | INFO | Dummy-43 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:37,494 | INFO | Dummy-43 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:37,494 | INFO | Dummy-43 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:37,495 | INFO | Dummy-43 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:37,495 | INFO | Dummy-43 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:37,495 | INFO | Dummy-43 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:37,495 | INFO | Dummy-43 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:37,495 | INFO | Dummy-43 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:37,495 | INFO | Dummy-43 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:37,495 | INFO | Dummy-43 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:37,495 | INFO | Dummy-43 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:37,495 | INFO | Dummy-43 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:37,495 | INFO | Dummy-43 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:37,495 | INFO | Dummy-43 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:37,496 | INFO | Dummy-43 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:37,496 | INFO | Dummy-43 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:37,496 | INFO | Dummy-43 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:37,496 | INFO | Dummy-43 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:37,496 | INFO | Dummy-43 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:37,496 | INFO | Dummy-43 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:37,508 | INFO | Dummy-43 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:37,509 | INFO | Dummy-43 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:37,510 | INFO | Dummy-43 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:37,510 | INFO | Dummy-43 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:37,511 | INFO | Dummy-43 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:37,511 | INFO | Dummy-43 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:37,515 | INFO | Dummy-43 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:38,692 | INFO | Dummy-45 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:38,732 | INFO | Dummy-45 | 실행 시작: _verify_directory
+2026-10-13 23:43:38,733 | INFO | Dummy-45 | 실행 완료: _verify_directory
+2026-10-13 23:43:38,733 | INFO | Dummy-45 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:38,733 | INFO | Dummy-45 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:38,740 | INFO | Dummy-45 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:38,740 | INFO | Dummy-45 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:38,741 | INFO | Dummy-45 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:38,741 | INFO | Dummy-45 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:38,741 | INFO | Dummy-45 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:38,741 | INFO | Dummy-45 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:38,741 | INFO | Dummy-45 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:38,741 | INFO | Dummy-45 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:38,741 | INFO | Dummy-45 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:38,741 | INFO | Dummy-45 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:38,741 | INFO | Dummy-45 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:38,741 | INFO | Dummy-45 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:38,741 | INFO | Dummy-45 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:38,741 | INFO | Dummy-45 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:38,741 | INFO | Dummy-45 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:38,742 | INFO | Dummy-45 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:38,742 | INFO | Dummy-45 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:38,742 | INFO | Dummy-45 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:38,742 | INFO | Dummy-45 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:38,742 | INFO | Dummy-45 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:38,742 | INFO | Dummy-45 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:38,742 | INFO | Dummy-45 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:38,742 | INFO | Dummy-45 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:38,742 | INFO | Dummy-45 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:38,742 | INFO | Dummy-45 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:38,742 | INFO | Dummy-45 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:38,754 | INFO | Dummy-45 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:38,755 | INFO | Dummy-45 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:38,756 | INFO | Dummy-45 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:38,756 | INFO | Dummy-45 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:38,757 | INFO | Dummy-45 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:38,757 | INFO | Dummy-45 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:38,761 | INFO | Dummy-45 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:39,602 | INFO | Dummy-47 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:39,643 | INFO | Dummy-47 | 실행 시작: _verify_directory
+2026-10-13 23:43:39,644 | INFO | Dummy-47 | 실행 완료: _verify_directory
+2026-10-13 23:43:39,644 | INFO | Dummy-47 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:39,644 | INFO | Dummy-47 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:39,651 | INFO | Dummy-47 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:39,651 | INFO | Dummy-47 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:39,652 | INFO | Dummy-47 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:39,652 | INFO | Dummy-47 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:39,652 | INFO | Dummy-47 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:39,652 | INFO | Dummy-47 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:39,652 | INFO | Dummy-47 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:39,652 | INFO | Dummy-47 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:39,652 | INFO | Dummy-47 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:39,653 | INFO | Dummy-47 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:39,653 | INFO | Dummy-47 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:39,653 | INFO | Dummy-47 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:39,653 | INFO | Dummy-47 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:39,653 | INFO | Dummy-47 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:39,653 | INFO | Dummy-47 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:39,653 | INFO | Dummy-47 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:39,653 | INFO | Dummy-47 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:39,653 | INFO | Dummy-47 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:39,653 | INFO | Dummy-47 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:39,653 | INFO | Dummy-47 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:39,654 | INFO | Dummy-47 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:39,654 | INFO | Dummy-47 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:39,654 | INFO | Dummy-47 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:39,654 | INFO | Dummy-47 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:39,654 | INFO | Dummy-47 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:39,654 | INFO | Dummy-47 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:39,668 | INFO | Dummy-47 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:39,668 | INFO | Dummy-47 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:39,670 | INFO | Dummy-47 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:39,670 | INFO | Dummy-47 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:39,670 | INFO | Dummy-47 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:39,671 | INFO | Dummy-47 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:39,674 | INFO | Dummy-47 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:39,919 | INFO | Dummy-49 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:39,960 | INFO | Dummy-49 | 실행 시작: _verify_directory
+2026-10-13 23:43:39,961 | INFO | Dummy-49 | 실행 완료: _verify_directory
+2026-10-13 23:43:39,961 | INFO | Dummy-49 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:39,961 | INFO | Dummy-49 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:39,968 | INFO | Dummy-49 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:39,968 | INFO | Dummy-49 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:39,969 | INFO | Dummy-49 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:39,969 | INFO | Dummy-49 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:39,969 | INFO | Dummy-49 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:39,969 | INFO | Dummy-49 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:39,969 | INFO | Dummy-49 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:39,969 | INFO | Dummy-49 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:39,969 | INFO | Dummy-49 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:39,969 | INFO | Dummy-49 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:39,969 | INFO | Dummy-49 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:39,970 | INFO | Dummy-49 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:39,970 | INFO | Dummy-49 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:39,970 | INFO | Dummy-49 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:39,970 | INFO | Dummy-49 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:39,970 | INFO | Dummy-49 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:39,970 | INFO | Dummy-49 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:39,970 | INFO | Dummy-49 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:39,971 | INFO | Dummy-49 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:39,971 | INFO | Dummy-49 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:39,971 | INFO | Dummy-49 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:39,971 | INFO | Dummy-49 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:39,971 | INFO | Dummy-49 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:39,971 | INFO | Dummy-49 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:39,971 | INFO | Dummy-49 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:39,972 | INFO | Dummy-49 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:39,983 | INFO | Dummy-49 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:39,983 | INFO | Dummy-49 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:39,985 | INFO | Dummy-49 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:39,985 | INFO | Dummy-49 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:39,985 | INFO | Dummy-49 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:39,986 | INFO | Dummy-49 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:39,989 | INFO | Dummy-49 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:40,388 | INFO | Dummy-51 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:40,429 | INFO | Dummy-51 | 실행 시작: _verify_directory
+2026-10-13 23:43:40,429 | INFO | Dummy-51 | 실행 완료: _verify_directory
+2026-10-13 23:43:40,429 | INFO | Dummy-51 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:40,429 | INFO | Dummy-51 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:40,436 | INFO | Dummy-51 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:40,436 | INFO | Dummy-51 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:40,436 | INFO | Dummy-51 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:40,436 | INFO | Dummy-51 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:40,437 | INFO | Dummy-51 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:40,437 | INFO | Dummy-51 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:40,437 | INFO | Dummy-51 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:40,437 | INFO | Dummy-51 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:40,437 | INFO | Dummy-51 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:40,437 | INFO | Dummy-51 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:40,437 | INFO | Dummy-51 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:40,437 | INFO | Dummy-51 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:40,437 | INFO | Dummy-51 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:40,437 | INFO | Dummy-51 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:40,437 | INFO | Dummy-51 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:40,437 | INFO | Dummy-51 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:40,437 | INFO | Dummy-51 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:40,437 | INFO | Dummy-51 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:40,438 | INFO | Dummy-51 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:40,438 | INFO | Dummy-51 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:40,438 | INFO | Dummy-51 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:40,438 | INFO | Dummy-51 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:40,438 | INFO | Dummy-51 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:40,438 | INFO | Dummy-51 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:40,438 | INFO | Dummy-51 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:40,438 | INFO | Dummy-51 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:40,450 | INFO | Dummy-51 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:40,450 | INFO | Dummy-51 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:40,452 | INFO | Dummy-51 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:40,452 | INFO | Dummy-51 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:40,452 | INFO | Dummy-51 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:40,453 | INFO | Dummy-51 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:40,456 | INFO | Dummy-51 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:40,842 | INFO | Dummy-53 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:40,882 | INFO | Dummy-53 | 실행 시작: _verify_directory
+2026-10-13 23:43:40,883 | INFO | Dummy-53 | 실행 완료: _verify_directory
+2026-10-13 23:43:40,883 | INFO | Dummy-53 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:40,883 | INFO | Dummy-53 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:40,889 | INFO | Dummy-53 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:40,890 | INFO | Dummy-53 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:40,890 | INFO | Dummy-53 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:40,890 | INFO | Dummy-53 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:40,890 | INFO | Dummy-53 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:40,890 | INFO | Dummy-53 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:40,890 | INFO | Dummy-53 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:40,891 | INFO | Dummy-53 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:40,891 | INFO | Dummy-53 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:40,891 | INFO | Dummy-53 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:40,891 | INFO | Dummy-53 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:40,891 | INFO | Dummy-53 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:40,891 | INFO | Dummy-53 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:40,891 | INFO | Dummy-53 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:40,891 | INFO | Dummy-53 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:40,891 | INFO | Dummy-53 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:40,891 | INFO | Dummy-53 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:40,891 | INFO | Dummy-53 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:40,891 | INFO | Dummy-53 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:40,891 | INFO | Dummy-53 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:40,891 | INFO | Dummy-53 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:40,892 | INFO | Dummy-53 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:40,892 | INFO | Dummy-53 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:40,892 | INFO | Dummy-53 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:40,892 | INFO | Dummy-53 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:40,892 | INFO | Dummy-53 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:40,904 | INFO | Dummy-53 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:40,904 | INFO | Dummy-53 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:40,905 | INFO | Dummy-53 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:40,906 | INFO | Dummy-53 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:40,906 | INFO | Dummy-53 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:40,906 | INFO | Dummy-53 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:40,909 | INFO | Dummy-53 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:41,209 | INFO | Dummy-55 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:41,248 | INFO | Dummy-55 | 실행 시작: _verify_directory
+2026-10-13 23:43:41,248 | INFO | Dummy-55 | 실행 완료: _verify_directory
+2026-10-13 23:43:41,249 | INFO | Dummy-55 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:41,249 | INFO | Dummy-55 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:41,255 | INFO | Dummy-55 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:41,255 | INFO | Dummy-55 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:41,255 | INFO | Dummy-55 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:41,255 | INFO | Dummy-55 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:41,255 | INFO | Dummy-55 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:41,255 | INFO | Dummy-55 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:41,256 | INFO | Dummy-55 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:41,256 | INFO | Dummy-55 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:41,256 | INFO | Dummy-55 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:41,256 | INFO | Dummy-55 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:41,256 | INFO | Dummy-55 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:41,256 | INFO | Dummy-55 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:41,256 | INFO | Dummy-55 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:41,256 | INFO | Dummy-55 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:41,256 | INFO | Dummy-55 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:41,256 | INFO | Dummy-55 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:41,256 | INFO | Dummy-55 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:41,257 | INFO | Dummy-55 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:41,257 | INFO | Dummy-55 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:41,257 | INFO | Dummy-55 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:41,257 | INFO | Dummy-55 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:41,257 | INFO | Dummy-55 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:41,257 | INFO | Dummy-55 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:41,257 | INFO | Dummy-55 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:41,257 | INFO | Dummy-55 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:41,257 | INFO | Dummy-55 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:41,268 | INFO | Dummy-55 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:41,268 | INFO | Dummy-55 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:41,269 | INFO | Dummy-55 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:41,269 | INFO | Dummy-55 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:41,270 | INFO | Dummy-55 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:41,270 | INFO | Dummy-55 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:41,273 | INFO | Dummy-55 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:41,625 | INFO | Dummy-57 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:41,666 | INFO | Dummy-57 | 실행 시작: _verify_directory
+2026-10-13 23:43:41,667 | INFO | Dummy-57 | 실행 완료: _verify_directory
+2026-10-13 23:43:41,667 | INFO | Dummy-57 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:41,667 | INFO | Dummy-57 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:41,673 | INFO | Dummy-57 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:41,673 | INFO | Dummy-57 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:41,674 | INFO | Dummy-57 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:41,674 | INFO | Dummy-57 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:41,674 | INFO | Dummy-57 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:41,674 | INFO | Dummy-57 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:41,674 | INFO | Dummy-57 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:41,674 | INFO | Dummy-57 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:41,674 | INFO | Dummy-57 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:41,674 | INFO | Dummy-57 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:41,674 | INFO | Dummy-57 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:41,674 | INFO | Dummy-57 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:41,674 | INFO | Dummy-57 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:41,674 | INFO | Dummy-57 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:41,674 | INFO | Dummy-57 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:41,674 | INFO | Dummy-57 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:41,675 | INFO | Dummy-57 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:41,675 | INFO | Dummy-57 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:41,675 | INFO | Dummy-57 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:41,675 | INFO | Dummy-57 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:41,675 | INFO | Dummy-57 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:41,675 | INFO | Dummy-57 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:41,675 | INFO | Dummy-57 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:41,675 | INFO | Dummy-57 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:41,675 | INFO | Dummy-57 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:41,675 | INFO | Dummy-57 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:41,691 | INFO | Dummy-57 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:41,691 | INFO | Dummy-57 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:41,692 | INFO | Dummy-57 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:41,692 | INFO | Dummy-57 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:41,693 | INFO | Dummy-57 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:41,693 | INFO | Dummy-57 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:41,696 | INFO | Dummy-57 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:42,008 | INFO | Dummy-59 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:42,049 | INFO | Dummy-59 | 실행 시작: _verify_directory
+2026-10-13 23:43:42,049 | INFO | Dummy-59 | 실행 완료: _verify_directory
+2026-10-13 23:43:42,050 | INFO | Dummy-59 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:42,050 | INFO | Dummy-59 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:42,056 | INFO | Dummy-59 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:42,056 | INFO | Dummy-59 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:42,057 | INFO | Dummy-59 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:42,057 | INFO | Dummy-59 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:42,057 | INFO | Dummy-59 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:42,057 | INFO | Dummy-59 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:42,057 | INFO | Dummy-59 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:42,057 | INFO | Dummy-59 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:42,057 | INFO | Dummy-59 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:42,057 | INFO | Dummy-59 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:42,057 | INFO | Dummy-59 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:42,057 | INFO | Dummy-59 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:42,057 | INFO | Dummy-59 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:42,057 | INFO | Dummy-59 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:42,057 | INFO | Dummy-59 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:42,057 | INFO | Dummy-59 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:42,058 | INFO | Dummy-59 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:42,058 | INFO | Dummy-59 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:42,058 | INFO | Dummy-59 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:42,058 | INFO | Dummy-59 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:42,058 | INFO | Dummy-59 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:42,058 | INFO | Dummy-59 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:42,058 | INFO | Dummy-59 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:42,058 | INFO | Dummy-59 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:42,058 | INFO | Dummy-59 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:42,058 | INFO | Dummy-59 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:42,069 | INFO | Dummy-59 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:42,069 | INFO | Dummy-59 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:42,071 | INFO | Dummy-59 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:42,071 | INFO | Dummy-59 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:42,071 | INFO | Dummy-59 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:42,072 | INFO | Dummy-59 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:42,075 | INFO | Dummy-59 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:42,542 | INFO | Dummy-61 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:42,581 | INFO | Dummy-61 | 실행 시작: _verify_directory
+2026-10-13 23:43:42,582 | INFO | Dummy-61 | 실행 완료: _verify_directory
+2026-10-13 23:43:42,582 | INFO | Dummy-61 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:42,582 | INFO | Dummy-61 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:42,588 | INFO | Dummy-61 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:42,589 | INFO | Dummy-61 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:42,589 | INFO | Dummy-61 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:42,589 | INFO | Dummy-61 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:42,589 | INFO | Dummy-61 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:42,589 | INFO | Dummy-61 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:42,589 | INFO | Dummy-61 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:42,589 | INFO | Dummy-61 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:42,589 | INFO | Dummy-61 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:42,589 | INFO | Dummy-61 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:42,589 | INFO | Dummy-61 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:42,589 | INFO | Dummy-61 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:42,589 | INFO | Dummy-61 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:42,589 | INFO | Dummy-61 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:42,590 | INFO | Dummy-61 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:42,590 | INFO | Dummy-61 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:42,590 | INFO | Dummy-61 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:42,590 | INFO | Dummy-61 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:42,590 | INFO | Dummy-61 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:42,590 | INFO | Dummy-61 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:42,590 | INFO | Dummy-61 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:42,591 | INFO | Dummy-61 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:42,591 | INFO | Dummy-61 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:42,591 | INFO | Dummy-61 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:42,591 | INFO | Dummy-61 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:42,591 | INFO | Dummy-61 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:42,600 | INFO | Dummy-61 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:42,601 | INFO | Dummy-61 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:42,602 | INFO | Dummy-61 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:42,602 | INFO | Dummy-61 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:42,602 | INFO | Dummy-61 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:42,603 | INFO | Dummy-61 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:42,607 | INFO | Dummy-61 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:42,930 | INFO | Dummy-63 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:42,969 | INFO | Dummy-63 | 실행 시작: _verify_directory
+2026-10-13 23:43:42,969 | INFO | Dummy-63 | 실행 완료: _verify_directory
+2026-10-13 23:43:42,970 | INFO | Dummy-63 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:42,970 | INFO | Dummy-63 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:42,975 | INFO | Dummy-63 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:42,976 | INFO | Dummy-63 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:42,976 | INFO | Dummy-63 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:42,976 | INFO | Dummy-63 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:42,976 | INFO | Dummy-63 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:42,976 | INFO | Dummy-63 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:42,976 | INFO | Dummy-63 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:42,976 | INFO | Dummy-63 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:42,976 | INFO | Dummy-63 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:42,976 | INFO | Dummy-63 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:42,977 | INFO | Dummy-63 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:42,977 | INFO | Dummy-63 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:42,977 | INFO | Dummy-63 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:42,977 | INFO | Dummy-63 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:42,977 | INFO | Dummy-63 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:42,977 | INFO | Dummy-63 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:42,977 | INFO | Dummy-63 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:42,977 | INFO | Dummy-63 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:42,977 | INFO | Dummy-63 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:42,977 | INFO | Dummy-63 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:42,977 | INFO | Dummy-63 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:42,977 | INFO | Dummy-63 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:42,977 | INFO | Dummy-63 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:42,977 | INFO | Dummy-63 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:42,977 | INFO | Dummy-63 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:42,978 | INFO | Dummy-63 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:42,988 | INFO | Dummy-63 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:42,988 | INFO | Dummy-63 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:42,989 | INFO | Dummy-63 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:42,989 | INFO | Dummy-63 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:42,990 | INFO | Dummy-63 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:42,990 | INFO | Dummy-63 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:42,993 | INFO | Dummy-63 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:43,362 | INFO | Dummy-65 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:43,402 | INFO | Dummy-65 | 실행 시작: _verify_directory
+2026-10-13 23:43:43,403 | INFO | Dummy-65 | 실행 완료: _verify_directory
+2026-10-13 23:43:43,403 | INFO | Dummy-65 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:43,403 | INFO | Dummy-65 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:43,409 | INFO | Dummy-65 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:43,410 | INFO | Dummy-65 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:43,410 | INFO | Dummy-65 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:43,410 | INFO | Dummy-65 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:43,410 | INFO | Dummy-65 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:43,410 | INFO | Dummy-65 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:43,411 | INFO | Dummy-65 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:43,411 | INFO | Dummy-65 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:43,411 | INFO | Dummy-65 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:43,411 | INFO | Dummy-65 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:43,411 | INFO | Dummy-65 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:43,411 | INFO | Dummy-65 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:43,411 | INFO | Dummy-65 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:43,411 | INFO | Dummy-65 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:43,412 | INFO | Dummy-65 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:43,412 | INFO | Dummy-65 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:43,412 | INFO | Dummy-65 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:43,413 | INFO | Dummy-65 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:43,413 | INFO | Dummy-65 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:43,413 | INFO | Dummy-65 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:43,413 | INFO | Dummy-65 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:43,413 | INFO | Dummy-65 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:43,413 | INFO | Dummy-65 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:43,414 | INFO | Dummy-65 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:43,414 | INFO | Dummy-65 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:43,414 | INFO | Dummy-65 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:43,428 | INFO | Dummy-65 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:43,428 | INFO | Dummy-65 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:43,429 | INFO | Dummy-65 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:43,430 | INFO | Dummy-65 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:43,430 | INFO | Dummy-65 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:43,431 | INFO | Dummy-65 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:43,436 | INFO | Dummy-65 | 실행 완료: reconnect_news_database
+2026-10-13 23:43:43,770 | INFO | Dummy-67 | 실행 시작: reconnect_news_database
+2026-10-13 23:43:43,914 | INFO | Dummy-67 | 실행 시작: _verify_directory
+2026-10-13 23:43:43,915 | INFO | Dummy-67 | 실행 완료: _verify_directory
+2026-10-13 23:43:43,915 | INFO | Dummy-67 | 프로그램 정상 종료 시 서버 중지 등록: C:\Program Files\PostgreSQL\18\data
+2026-10-13 23:43:43,915 | INFO | Dummy-67 | 실행 시작: step_3_prepare_tables
+2026-10-13 23:43:43,921 | INFO | Dummy-67 | pgvector 확장 확인 및 필요 시 생성
+2026-10-13 23:43:43,922 | INFO | Dummy-67 | 3.2 기존 테이블 사용: public.news_id
+2026-10-13 23:43:43,922 | INFO | Dummy-67 | 3.2 기존 테이블 사용: public.publishers
+2026-10-13 23:43:43,922 | INFO | Dummy-67 | 3.2 기존 테이블 사용: public.categories
+2026-10-13 23:43:43,922 | INFO | Dummy-67 | 3.2 기존 테이블 사용: public.keywords
+2026-10-13 23:43:43,922 | INFO | Dummy-67 | 3.2 기존 테이블 사용: public.embedding_models
+2026-10-13 23:43:43,922 | INFO | Dummy-67 | 3.2 기존 테이블 사용: public.today_news
+2026-10-13 23:43:43,922 | INFO | Dummy-67 | 3.2 기존 테이블 사용: public.news
+2026-10-13 23:43:43,922 | INFO | Dummy-67 | 3.2 기존 테이블 사용: public.old_news
+2026-10-13 23:43:43,922 | INFO | Dummy-67 | 3.2 기존 테이블 사용: public.news_location
+2026-10-13 23:43:43,923 | INFO | Dummy-67 | 3.2 기존 테이블 사용: public.news_keywords
+2026-10-13 23:43:43,923 | INFO | Dummy-67 | 3.2 기존 테이블 사용: public.news_embeddings
+2026-10-13 23:43:43,923 | INFO | Dummy-67 | 3.2 기존 테이블 사용: public.news_embedding_locator
+2026-10-13 23:43:43,923 | INFO | Dummy-67 | 3.2 기존 테이블 사용: public.learning_data_news
+2026-10-13 23:43:43,923 | INFO | Dummy-67 | 3.2 기존 테이블 사용: analysis.analysis_runs
+2026-10-13 23:43:43,923 | INFO | Dummy-67 | 3.2 기존 테이블 사용: analysis.analysis_overview
+2026-10-13 23:43:43,923 | INFO | Dummy-67 | 3.2 기존 테이블 사용: analysis.analysis_keyword_stats
+2026-10-13 23:43:43,923 | INFO | Dummy-67 | 3.2 기존 테이블 사용: analysis.analysis_category_stats
+2026-10-13 23:43:43,924 | INFO | Dummy-67 | 3.2 기존 테이블 사용: analysis.analysis_publisher_stats
+2026-10-13 23:43:43,924 | INFO | Dummy-67 | 3.2 기존 테이블 사용: analysis.analysis_author_stats
+2026-10-13 23:43:43,924 | INFO | Dummy-67 | 3.2 기존 테이블 사용: analysis.analysis_time_buckets
+2026-10-13 23:43:43,924 | INFO | Dummy-67 | 3.2 기존 테이블 사용: analysis.analysis_issues
+2026-10-13 23:43:43,924 | INFO | Dummy-67 | 3.2 기존 테이블 사용: analysis.analysis_issue_members
+2026-10-13 23:43:43,924 | INFO | Dummy-67 | 3.2 기존 테이블 사용: analysis.analysis_issue_keywords
+2026-10-13 23:43:43,924 | INFO | Dummy-67 | 3.2 기존 테이블 사용: analysis.analysis_issue_timeseries
+2026-10-13 23:43:43,924 | INFO | Dummy-67 | 3.2 기존 테이블 사용: analysis.analysis_similar_news
+2026-10-13 23:43:43,936 | INFO | Dummy-67 | 실행 시작: ensure_embedding_partitions
+2026-10-13 23:43:43,936 | INFO | Dummy-67 | 기존 연도 파티션 확인: public.news_embeddings_2025
+2026-10-13 23:43:43,938 | INFO | Dummy-67 | 기존 연도 파티션 확인: public.news_embeddings_2026
+2026-10-13 23:43:43,938 | INFO | Dummy-67 | 기존 연도 파티션 확인: public.news_embeddings_2027
+2026-10-13 23:43:43,938 | INFO | Dummy-67 | 실행 완료: ensure_embedding_partitions
+2026-10-13 23:43:43,939 | INFO | Dummy-67 | 실행 완료: step_3_prepare_tables
+2026-10-13 23:43:43,942 | INFO | Dummy-67 | 실행 완료: reconnect_news_database
+2026-10-13 23:54:43,268 | INFO | MainThread | 실행 시작: _command
+2026-10-13 23:54:43,269 | INFO | MainThread | 외부 명령 실행: pg_ctl.exe
+2026-10-13 23:54:43,319 | INFO | MainThread | 외부 명령 종료: pg_ctl.exe / 종료 코드=3
+2026-10-13 23:54:43,319 | INFO | MainThread | 명령 출력: pg_ctl: 가동 중인 서버가 없음
+2026-10-13 23:54:43,319 | INFO | MainThread | 실행 완료: _command
+2026-10-13 23:54:43,319 | INFO | MainThread | 이미 중지된 PostgreSQL 서버: C:\Program Files\PostgreSQL\18\data
