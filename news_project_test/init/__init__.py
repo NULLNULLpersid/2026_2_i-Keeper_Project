@@ -1,5 +1,4 @@
-"""Load project settings from config.py as the shared config module."""
-
+"""config.py에서 프로젝트 설정을 가져옵니다."""
 import sys
 from importlib.machinery import SourceFileLoader
 from importlib.util import module_from_spec, spec_from_loader
@@ -13,10 +12,7 @@ def reload_config():
     loader = SourceFileLoader("config", str(CONFIG_PATH))
     spec = spec_from_loader("config", loader)
     fresh_module = module_from_spec(spec)
-    loader.exec_module(fresh_module)
-    if not isinstance(getattr(fresh_module, "INSTALLED_LIBRARIES", None), list):
-        fresh_module.INSTALLED_LIBRARIES = []
-
+    exec(compile(CONFIG_PATH.read_text(encoding="utf-8"), str(CONFIG_PATH), "exec"), fresh_module.__dict__)
     current_module = sys.modules.get("config")
     if current_module is None:
         sys.modules["config"] = fresh_module
