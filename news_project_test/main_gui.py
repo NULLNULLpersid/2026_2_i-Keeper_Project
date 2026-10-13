@@ -12,6 +12,7 @@ class CollectionMenu(QDialog):
         self.setWindowTitle("뉴스 수집")
         configure_window(self, "collection_menu")
         self.worker_window = None
+        self.media_window = None
         layout = page_layout(self, "뉴스 수집", "언론사를 선택하고 RSS 뉴스 수집을 시작하세요.")
         self.summary = QLabel()
         layout.addWidget(self.summary)
@@ -27,8 +28,19 @@ class CollectionMenu(QDialog):
         self.summary.setWordWrap(True)
 
     def select_media(self):
-        MediaSelectionWindow(self).exec()
+        if self.media_window is None:
+            self.media_window = MediaSelectionWindow(self.parentWidget())
+            self.media_window.finished.connect(self.on_media_closed)
+        self.media_window.show()
+        self.media_window.raise_()
+        self.media_window.activateWindow()
+
+    def on_media_closed(self):
+        dialog = self.media_window
+        self.media_window = None
         self.refresh_summary()
+        if dialog:
+            dialog.deleteLater()
 
     def start_collection(self):
         if self.worker_window is not None:
@@ -40,7 +52,7 @@ class CollectionMenu(QDialog):
         if dialog.start():
             self.worker_window = dialog
             dialog.finished.connect(self.restore_collection_menu)
-            dialog.setModal(True)
+            dialog.setModal(False)
             self.hide()
             dialog.show()
             dialog.raise_()
@@ -77,6 +89,7 @@ class NewsApp(QMainWindow):
         self.setWindowTitle("뉴스기사 수집 및 분석")
         configure_window(self, "main")
         self.collection_menu = None
+        self.settings_window = None
         widget = QWidget()
         self.setCentralWidget(widget)
         layout = page_layout(widget, "뉴스 기사 수집 및 분석", "RSS기반 뉴스 수집 및 분석")
@@ -92,13 +105,24 @@ class NewsApp(QMainWindow):
         layout.addStretch()
 
     def open_settings(self):
-        DatabaseSettingWindow(self).exec()
+        if self.settings_window is None:
+            self.settings_window = DatabaseSettingWindow(self)
+            self.settings_window.finished.connect(self.on_settings_closed)
+        self.settings_window.show()
+        self.settings_window.raise_()
+        self.settings_window.activateWindow()
+
+    def on_settings_closed(self):
+        dialog = self.settings_window
+        self.settings_window = None
+        if dialog:
+            dialog.deleteLater()
 
     def open_collection_menu(self):
         # exec()의 중첩 이벤트 루프는 hide()로 종료될 수 있으므로 사용하지 않는다.
         if self.collection_menu is None:
             self.collection_menu = CollectionMenu(self)
-            self.collection_menu.setModal(True)
+            self.collection_menu.setModal(False)
         progress = self.collection_menu.worker_window
         target = progress if progress is not None else self.collection_menu
         target.show()
