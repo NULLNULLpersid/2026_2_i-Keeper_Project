@@ -34,8 +34,8 @@ async def collect_with_connection(connection, urls, ui_callback, file_logger):
             connection, temporary_items)
         stats['duplicates'] += duplicate_count
         ui_callback(f'RSS 임시 저장 {len(temporary_items)}건 / 중복 제거 후 {len(targets)}건')
-
         inserted = dict.fromkeys(latest, 0)
+
         # 전체 RSS의 중복 제거가 끝난 뒤 URL을 하나씩 수집한다.
         async for item, article in URL_.iter_articles(session, targets):
             publisher = item['publisher_name']
@@ -63,7 +63,7 @@ async def collect_with_connection(connection, urls, ui_callback, file_logger):
                 stats['failed'] += 1
                 file_logger.exception('[%s] 기사 저장 실패: %s', publisher, item['url'])
                 continue
-
+            
             # 저장에 성공한 원본 URL을 기록한다.
             seen_urls.update((item['url'], article['url']))
             inserted[publisher] += int(result.created)
@@ -73,5 +73,4 @@ async def collect_with_connection(connection, urls, ui_callback, file_logger):
             ui_callback(f'[{publisher}] 기사 {count}건 저장 완료')
             file_logger.info('[%s] 기사 %s건 저장', publisher, count)
     ui_callback('모든 언론사 뉴스 수집 완료.')
-    
     return stats
