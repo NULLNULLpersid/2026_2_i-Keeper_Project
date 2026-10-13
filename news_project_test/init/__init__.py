@@ -16,7 +16,7 @@ def reload_config():
     loader = SourceFileLoader("config", str(CONFIG_PATH))
     spec = spec_from_loader("config", loader)
     fresh_module = module_from_spec(spec)
-    loader.exec_module(fresh_module)
+    exec(compile(CONFIG_PATH.read_text(encoding="utf-8"), str(CONFIG_PATH), "exec"), fresh_module.__dict__)
     try:
         fresh_module.INSTALLED_LIBRARIES = json.loads(LIBRARY_STATE_PATH.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
