@@ -12,7 +12,7 @@ __path__ = [str(Path(__file__).with_suffix(''))]
 
 from .setting.common import _LOGGER, _logged
 from .setting.server_init import step_1_prepare_server
-from .setting.sever_create import step_2_connect_server, _verify_directory
+from .setting.server_create import step_2_connect_server, _verify_directory
 from .setting.server_shutdown import register_server_shutdown, stop_postgresql_server
 from .setting.table_create import (
     TABLE_DEFINITIONS, ensure_embedding_partitions, step_3_prepare_tables, validate_schema,
