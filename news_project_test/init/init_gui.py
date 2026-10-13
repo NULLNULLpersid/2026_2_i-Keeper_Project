@@ -1,7 +1,7 @@
 """환경 검사 작업과 PySide6 시작 화면."""
 from PySide6.QtCore import QThread, Signal
 from PySide6.QtWidgets import QDialog, QPlainTextEdit, QProgressBar
-from gui_common import page_layout, button
+from gui_design import page_layout, button, configure_window
 from .init import check_environment
 
 class EnvironmentWorker(QThread):
@@ -17,7 +17,7 @@ class EnvChecker(QDialog):
         super().__init__(root)
         self.on_complete = on_complete_callback
         self.setWindowTitle("초기 환경 확인")
-        self.resize(660, 390)
+        configure_window(self, "initialization")
         layout = page_layout(self, "환경 확인", "라이브러리와 PostgreSQL 경로를 확인합니다.")
         self.log = QPlainTextEdit()
         self.log.setReadOnly(True)

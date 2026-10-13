@@ -13,7 +13,7 @@ __path__ = [str(Path(__file__).with_suffix(''))]
 from .setting.common import _LOGGER, _logged
 from .setting.server_init import step_1_prepare_server
 from .setting.server_create import step_2_connect_server, _verify_directory
-from .setting.server_shutdown import register_server_shutdown, stop_postgresql_server
+from .setting.server_shutdown import register_server_shutdown, stop_postgresql_server, shutdown_registered_servers
 from .setting.table_create import (
     TABLE_DEFINITIONS, ensure_embedding_partitions, step_3_prepare_tables, validate_schema,
 )
@@ -142,6 +142,6 @@ __all__ = [
     "step_3_prepare_tables", "ensure_embedding_partitions", "initial_connect_news_database",
     "reconnect_news_database", "connect_news_database", "log_database_call",
     "validate_schema", "validate_url", "configured_database",
-    "register_server_shutdown", "stop_postgresql_server",
+    "register_server_shutdown", "stop_postgresql_server", "shutdown_registered_servers",
 ]
 from .setting.common import LOG_PATH
