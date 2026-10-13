@@ -3,7 +3,7 @@
 #############################
 
 # /bin 경로
-POSTGRES_BIN = r"C:/Program Files/PostgreSQL/18/bin"
+POSTGRES_BIN = "C:/Program Files/PostgreSQL/18/bin"
 
 # /data 경로
 SAVE_PATH = "C:/Program Files/PostgreSQL/18/data"
@@ -55,3 +55,9 @@ SELECTED_RSS = ['보안 뉴스']
 #############################
 
 INSTALLED_LIBRARIES = ['PySide6', 'aiohttp', 'asyncpg', 'pgvector', 'feedparser', 'trafilatura', 'numpy']
+
+#############################
+# [설정한 UI 테마 확인]
+#############################
+
+UI_THEME = 'light'
