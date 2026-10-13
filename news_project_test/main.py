@@ -92,24 +92,20 @@ def main():
     프로그램 전체 시작 흐름
     """
 
-    # Tkinter Root 생성
-    root = tk.Tk()
-    root.withdraw() # GUI를 숨겨둠
-    root.title(APP_TITLE) # 프로그램 종료 시 사용할 제목
-    
-    # config.py 최신 상태 확인
-    if not reload_config():
-        root.destroy()
-        return
-
-   # 실행 시마다 항상 환경 검사(GPU 등)를 진행
-    root.setup_app = EnvChecker(
-        root,
-        on_complete_callback=lambda: check_postgres_and_launch(root)
-    )
-
-    # Tkinter 이벤트 루프
+    root = None
     try:
+        # 초기화 실패나 중간 return도 아래 finally에서 정리한다.
+        root = tk.Tk()
+        root.withdraw()
+        root.title(APP_TITLE)
+
+        if not reload_config():
+            return
+
+        root.setup_app = EnvChecker(
+            root,
+            on_complete_callback=lambda: check_postgres_and_launch(root)
+        )
         root.mainloop()
 
     except KeyboardInterrupt:
@@ -119,6 +115,18 @@ def main():
         print(f"[MAIN] 프로그램 실행 중 오류: {e}")
 
     finally:
+        # mainloop.quit() 경로에서도 남아 있는 GUI 자원을 먼저 정리한다.
+        if root is not None:
+            try:
+                root.destroy()
+            except tk.TclError:
+                pass  # X 버튼으로 이미 파괴된 창
+        try:
+            # 지연 import: 초기 환경 검사 이전에 DB 모듈을 불러오지 않는다.
+            from db.setting import shutdown_registered_servers
+            shutdown_registered_servers()
+        except Exception as e:
+            print(f"[MAIN] 서버 종료 처리 중 오류: {e}")
         print("[MAIN] 프로그램 종료")
 
 # Entry Point

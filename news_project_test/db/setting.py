@@ -12,7 +12,8 @@ __path__ = [str(Path(__file__).with_suffix(''))]
 
 from .setting.common import _LOGGER, _logged
 from .setting.server_init import step_1_prepare_server
-from .setting.server_create import step_2_connect_server, _verify_directory
+from .setting.sever_create import step_2_connect_server, _verify_directory
+from .setting.server_shutdown import register_server_shutdown, stop_postgresql_server
 from .setting.table_create import (
     TABLE_DEFINITIONS, ensure_embedding_partitions, step_3_prepare_tables, validate_schema,
 )
@@ -84,6 +85,7 @@ async def reconnect_news_database(*, storage_path: str | Path, user: str,
     )
     try:
         await _verify_directory(connection, data)
+        register_server_shutdown(data=data, bin_path=bin_path, timeout=timeout)
     except BaseException:
         await connection.close()
         raise
@@ -114,7 +116,7 @@ async def configured_database(settings=None, **overrides):
     동일 연결에서 DB 함수를 동시에 실행하지 말 것(HTTP 요청만 병렬 처리 가능).
     """
     if settings is None:
-        from init import config as settings
+        import config as settings
     options = dict(storage_path=settings.SAVE_PATH, user=settings.DB_USER,
                    password=settings.DB_PASSWORD, host=settings.DB_HOST,
                    port=settings.DB_PORT, database=settings.DB_NAME,
@@ -140,5 +142,6 @@ __all__ = [
     "step_3_prepare_tables", "ensure_embedding_partitions", "initial_connect_news_database",
     "reconnect_news_database", "connect_news_database", "log_database_call",
     "validate_schema", "validate_url", "configured_database",
+    "register_server_shutdown", "stop_postgresql_server",
 ]
 from .setting.common import LOG_PATH

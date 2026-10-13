@@ -7,6 +7,7 @@ from pathlib import Path
 
 from .common import _LOGGER, _logged
 from .server_init import _binary, _command, _check
+from .server_shutdown import register_server_shutdown
 
 @_logged
 async def _verify_directory(connection, data: Path) -> None:
@@ -42,10 +43,13 @@ async def step_2_connect_server(*, data: Path, user: str, password: str,
             '-l', str(data / 'server.log'), '-w', '-t', str(timeout),
             '-o', f'-p {port} -h localhost'], timeout + 15)
         _check(started, 'PostgreSQL 시작')
+        # 기동 후 DB 접속에 실패해도 프로그램 종료 시 서버를 정리한다.
+        register_server_shutdown(data=data, bin_path=bin_path, timeout=timeout)
         admin = await asyncpg.connect(database='postgres', **params)
     _LOGGER.info('2. 서버 접속 성공')
     try:
         await _verify_directory(admin, data)
+        register_server_shutdown(data=data, bin_path=bin_path, timeout=timeout)
         await admin.execute('SELECT pg_advisory_lock(736204185902)')
         try:
             exists = await admin.fetchval('SELECT 1 FROM pg_database WHERE datname=$1', database)
