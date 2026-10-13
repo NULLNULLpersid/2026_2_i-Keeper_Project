@@ -63,7 +63,7 @@ async def collect_with_connection(connection, urls, ui_callback, file_logger):
                 stats['failed'] += 1
                 file_logger.exception('[%s] 기사 저장 실패: %s', publisher, item['url'])
                 continue
-            
+
             # 저장에 성공한 원본 URL을 기록한다.
             seen_urls.update((item['url'], article['url']))
             inserted[publisher] += int(result.created)
