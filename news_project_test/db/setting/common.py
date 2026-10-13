@@ -8,7 +8,7 @@ from contextvars import ContextVar
 from functools import wraps
 from pathlib import Path
 
-LOG_PATH = Path(__file__).resolve().parents[1] / "db.log"
+LOG_PATH = Path(__file__).resolve().parents[2] / "logs" / "db.log"
 _LOGGER = logging.getLogger("db.database")
 _LOGGER.setLevel(logging.INFO)
 _LOGGER.propagate = False
@@ -24,6 +24,7 @@ class _PrivateFormatter(logging.Formatter):
 def _configure_logging():
     with _LOG_LOCK:
         if not _LOGGER.handlers:
+            LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
             handler = logging.FileHandler(LOG_PATH, mode="a", encoding="utf-8")
             handler.setFormatter(_PrivateFormatter(
                 "%(asctime)s | %(levelname)s | %(threadName)s | %(message)s"

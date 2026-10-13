@@ -14,7 +14,7 @@ from .media_select.media_select import build_selected_feeds
 
 def create_log_path():
     """실행별 로그 생성. 프로젝트에 쓰지 못하면 임시 폴더를 사용한다."""
-    name = f"collection_{datetime.now():%Y%m%d_%H%M%S}_{uuid4().hex[:8]}.log"
+    name = f"news_collection_{datetime.now():%Y%m%d_%H%M%S}_{uuid4().hex[:8]}.log"
     roots = [
         Path(__file__).resolve().parent.parent / "logs",
         Path(tempfile.gettempdir()) / "news_project_logs",
