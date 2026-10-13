@@ -23,7 +23,7 @@ class CollectionMenu(QDialog):
 
     def refresh_summary(self):
         names = list(getattr(config, "SELECTED_RSS", []))
-        self.summary.setText(f"선택한 언론사 {len(names)}개\n" + (", ".join(names) or "언론사를 선택해주세요."))
+        self.summary.setText(f"선택한 언론사: {len(names)}개")
         self.summary.setWordWrap(True)
 
     def select_media(self):
@@ -61,7 +61,7 @@ class NewsApp(QMainWindow):
         configure_window(self, "main")
         widget = QWidget()
         self.setCentralWidget(widget)
-        layout = page_layout(widget, "뉴스 기사 수집 및 분석", "RSS 기반 뉴스 수집 · PostgreSQL 데이터 관리")
+        layout = page_layout(widget, "뉴스 기사 수집 및 분석", "RSS기반 뉴스 수집 및 분석")
         card = QFrame()
         content = card_layout(card)
         content.addWidget(QLabel("작업을 선택하세요"))
@@ -72,7 +72,6 @@ class NewsApp(QMainWindow):
         content.addWidget(analysis)
         layout.addWidget(card)
         layout.addStretch()
-        layout.addWidget(QLabel("i-Keeper  |  뉴스 수집 프로젝트"))
 
     def open_settings(self):
         DatabaseSettingWindow(self).exec()
