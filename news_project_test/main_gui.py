@@ -31,15 +31,32 @@ class CollectionMenu(QDialog):
         self.refresh_summary()
 
     def start_collection(self):
-        if self.worker_window and self.worker_window.isVisible():
+        if self.worker_window is not None:
             self.worker_window.raise_()
             self.worker_window.activateWindow()
             return
-        dialog = CrawlerProgressWindow(self)
+        # 숨길 메뉴를 native owner로 사용하지 않는다. 두 창은 메인 창의 형제다.
+        dialog = CrawlerProgressWindow(self.parentWidget())
         if dialog.start():
             self.worker_window = dialog
+            dialog.finished.connect(self.restore_collection_menu)
             dialog.setModal(True)
+            self.hide()
             dialog.show()
+            dialog.raise_()
+            dialog.activateWindow()
+        else:
+            dialog.deleteLater()
+
+    def restore_collection_menu(self):
+        dialog = self.worker_window
+        self.worker_window = None
+        self.refresh_summary()
+        self.show()
+        self.raise_()
+        self.activateWindow()
+        if dialog:
+            dialog.deleteLater()
 
     def reject(self):
         if self.worker_window and self.worker_window.is_collecting:
@@ -59,6 +76,7 @@ class NewsApp(QMainWindow):
         super().__init__()
         self.setWindowTitle("뉴스기사 수집 및 분석")
         configure_window(self, "main")
+        self.collection_menu = None
         widget = QWidget()
         self.setCentralWidget(widget)
         layout = page_layout(widget, "뉴스 기사 수집 및 분석", "RSS기반 뉴스 수집 및 분석")
@@ -77,7 +95,15 @@ class NewsApp(QMainWindow):
         DatabaseSettingWindow(self).exec()
 
     def open_collection_menu(self):
-        CollectionMenu(self).exec()
+        # exec()의 중첩 이벤트 루프는 hide()로 종료될 수 있으므로 사용하지 않는다.
+        if self.collection_menu is None:
+            self.collection_menu = CollectionMenu(self)
+            self.collection_menu.setModal(True)
+        progress = self.collection_menu.worker_window
+        target = progress if progress is not None else self.collection_menu
+        target.show()
+        target.raise_()
+        target.activateWindow()
 
     def closeEvent(self, event):
         from collection.collection_gui import CollectionWorker
