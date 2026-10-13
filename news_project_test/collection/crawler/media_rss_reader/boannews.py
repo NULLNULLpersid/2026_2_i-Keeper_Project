@@ -9,7 +9,6 @@ from . import common
 PUBLISHER_NAME = '보안뉴스'
 ALIASES = ('보안뉴스', '보안 뉴스')
 
-
 def parse_feed(payload):
     results = []
     for item in common.rss_items(payload):
@@ -21,15 +20,12 @@ def parse_feed(payload):
                 published_at=common.parse_datetime(common.field(item, 'pubDate'))))
     return results
 
-
 def clean_author(value):
     return common.clean_author(value, PUBLISHER_NAME, ALIASES)
-
 
 def extract_author(html, metadata=None, content=None):
     return common.extract_url_author(html, metadata, content, PUBLISHER_NAME, ALIASES,
         extra_xpaths=('//*[@id="news_util"]', '//*[contains(@class,"writer")]',))
-
 
 def _class_xpath(class_name: str) -> str:
     return (
@@ -37,11 +33,9 @@ def _class_xpath(class_name: str) -> str:
         f"' {class_name} ')"
     )
 
-
 def _clean_name(text: str) -> str:
     text = re.sub(r'\s+', ' ', text).strip()
     return re.sub(r'\s*기자\s*$', '', text).strip()
-
 
 def _email_from_link(link) -> str | None:
     href = (link.get('href') or '').strip()
@@ -53,7 +47,6 @@ def _email_from_link(link) -> str | None:
     if re.fullmatch(r'[^\s@,;<>]+@[^\s@,;<>]+\.[^\s@,;<>]+', value):
         return value
     return None
-
 
 def extract_author_contacts(html: str | bytes, content=None) -> list[dict[str, str | None]]:
     """article-writer 영역 안에서만 이름·이메일을 연결한다.

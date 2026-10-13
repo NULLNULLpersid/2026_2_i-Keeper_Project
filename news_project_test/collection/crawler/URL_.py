@@ -12,7 +12,6 @@ from .media_rss_reader.common import extract_author_contacts
 
 ARTICLE_TIMEOUT = 30
 
-
 class _PublishedTimeParser(HTMLParser):
     """기사 작성 시각 메타 태그의 시간과 시간대를 그대로 보존한다."""
 
@@ -39,7 +38,6 @@ def extract_published_at(html, metadata, rss_item):
         if published is not None:
             return published
     return parse_datetime(getattr(metadata, 'date', None)) or rss_item.get('published_at')
-
 
 def parse_article(html, final_url, rss_item):
     """URL 메타데이터를 우선하며 누락된 제목·작성자·시각은 RSS 값으로 보완한다."""
@@ -83,7 +81,6 @@ async def fetch_article(session, rss_item, semaphore):
             final_url = str(response.url)
         return await asyncio.to_thread(parse_article, html, final_url, rss_item)
 
-
 async def iter_articles(session, rss_items, *, request_interval=1.0):
     """기사 URL을 순차 요청한다. 요청 시작 사이에 최소 1초 간격을 둔다.
 
@@ -106,7 +103,6 @@ async def iter_articles(session, rss_items, *, request_interval=1.0):
         except Exception as error:
             article = error
         yield item, article
-
 
 async def fetch_articles(session, rss_items, *, max_concurrent=1):
     """호환용 목록 API. 기사 URL은 항상 1초 간격으로 하나씩 요청한다."""

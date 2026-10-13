@@ -6,11 +6,9 @@ from email.utils import parsedate_to_datetime
 import json
 import re
 from xml.etree import ElementTree
-
 from lxml import html as html_parser
 
 KST = timezone(timedelta(hours=9))
-
 
 def parse_datetime(value):
     if isinstance(value, datetime):
@@ -30,7 +28,6 @@ def parse_datetime(value):
         parsed = parsed.replace(tzinfo=KST)
     return parsed.astimezone(timezone.utc)
 
-
 def field(item, *names):
     """namespace와 CDATA 여부와 무관하게 지정한 직접 자식의 값을 읽는다."""
     for name in names:
@@ -41,11 +38,9 @@ def field(item, *names):
                     return value
     return None
 
-
 def rss_items(payload):
     root = ElementTree.fromstring(payload)
     return [item for item in root.iter() if item.tag.rsplit('}', 1)[-1] == 'item']
-
 
 def clean_author(value, publisher, aliases=()):
     """언론사명은 제외하고 작성자 표기의 '기자'와 이메일을 제거한다."""
@@ -66,7 +61,6 @@ def clean_author(value, publisher, aliases=()):
     comparison = re.sub(r'\s+', '', value).casefold()
     return value if value and comparison not in names else None
 
-
 def _json_authors(value):
     if isinstance(value, dict):
         author = value.get('author')
@@ -81,7 +75,6 @@ def _json_authors(value):
     elif isinstance(value, list):
         for child in value:
             yield from _json_authors(child)
-
 
 def extract_url_author(html, metadata, content, publisher, aliases=(), extra_xpaths=()):
     """기사 HTML의 작성자 메타정보·JSON-LD·byline에서 기자명을 찾는다."""
@@ -125,15 +118,12 @@ def extract_url_author(html, metadata, content, publisher, aliases=(), extra_xpa
             return candidate
     return None
 
-
 def _byline(value, valid):
     value = re.sub(r'\s+', ' ', value).strip()
     match = re.fullmatch(r'([가-힣]{2,5}(?:\s*(?:,|·|/)?\s*[가-힣]{2,5}){0,4})\s*(기자|특파원)(?:\s+[\w.+-]+@[\w.-]+)?', value)
     return valid(f'{match[1]} {match[2]}') if match else None
 
-
 _EMAIL = re.compile(r"[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\.[A-Za-z]{2,}")
-
 
 def extract_author_contacts(html, content=None):
     """작성자 영역에서 확인되는 이름·이메일 쌍만 반환한다.

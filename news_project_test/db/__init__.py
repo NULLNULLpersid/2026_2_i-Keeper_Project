@@ -22,7 +22,6 @@ from .pipeline.extract import (
     get_embedding, find_similar_news, get_analysis_results,
 )
 
-
 # 위 함수들은 import를 통해 모듈 API로도 공개된다.
 #   await db.save_news(connection, publisher_name=..., ...)
 # 아래 클래스는 connection을 보관하여 매번 연결 인수를 전달하지 않게 한다.

@@ -4,11 +4,9 @@ from init import config
 from db import setting
 from .crawler.scraping_run import collect_with_connection
 
-
 def collect_news_cycle(urls, path, cancel_event, ui_callback, file_logger):
-    """Tkinter 작업 스레드용 진입점. 기존 GUI 호출 인수를 유지한다."""
+    """GUI 작업 스레드용 진입점. 기존 GUI 호출 인수를 유지한다."""
     return asyncio.run(_async_collect_news_cycle(urls, cancel_event, ui_callback, file_logger, path))
-
 
 async def _async_collect_news_cycle(urls, cancel_event, ui_callback, file_logger, path=None):
     if cancel_event.is_set():
