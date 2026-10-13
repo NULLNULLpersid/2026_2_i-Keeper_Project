@@ -1,7 +1,7 @@
-"""환경 설정 화면."""
+"""인터페이스·서버 경로·서버 접속 설정 화면."""
 from PySide6.QtWidgets import (
     QApplication, QDialog, QLabel, QFormLayout, QLineEdit, QHBoxLayout,
-    QGridLayout, QGroupBox, QFileDialog, QMessageBox, QCheckBox, QRadioButton,
+    QGridLayout, QGroupBox, QButtonGroup, QFileDialog, QMessageBox, QCheckBox, QRadioButton,
 )
 from init import config
 from gui_design import page_layout, button, configure_window, FORM_SPACING, apply_theme
@@ -25,6 +25,10 @@ class DatabaseSettingWindow(QDialog):
         self.light_radio = QRadioButton("흰색")
         self.dark_radio.setChecked(getattr(config, "UI_THEME", "light") == "dark")
         self.light_radio.setChecked(not self.dark_radio.isChecked())
+        self.theme_group = QButtonGroup(self)
+        self.theme_group.addButton(self.dark_radio)
+        self.theme_group.addButton(self.light_radio)
+        self.theme_group.setExclusive(True)
         theme_row.addWidget(self.dark_radio)
         theme_row.addWidget(self.light_radio)
         theme_row.addStretch()
@@ -56,6 +60,7 @@ class DatabaseSettingWindow(QDialog):
             field = QLineEdit(str(getattr(config, key, "")))
             self.fields[key] = field
             connection_form.addRow(label, field)
+        self.initial_db_values = {key: field.text() for key, field in self.fields.items()}
         self.port = self.fields["DB_PORT"]
         self.fields["DB_PASSWORD"].setEchoMode(QLineEdit.EchoMode.Password)
         self.show_password = QCheckBox("비밀번호 표시")
@@ -79,20 +84,26 @@ class DatabaseSettingWindow(QDialog):
             field.setText(value)
 
     def save_config(self):
-        settings = {key: field.text().strip() for key, field in self.fields.items()}
-        settings["DB_PASSWORD"] = self.fields["DB_PASSWORD"].text()
-        settings["DB_NAME"] = getattr(config, "DB_NAME", "News_Data_Server")
-        settings["UI_THEME"] = "dark" if self.dark_radio.isChecked() else "light"
+        theme = "dark" if self.dark_radio.isChecked() else "light"
+        # 인터페이스만 변경하면 기존 DB 경로의 유효성이 테마 저장을 막지 않는다.
+        db_changed = any(field.text() != self.initial_db_values[key]
+                         for key, field in self.fields.items())
+        settings = {"UI_THEME": theme}
         try:
-            try:
-                settings["DB_PORT"] = int(settings["DB_PORT"])
-            except ValueError:
-                raise ValueError("포트는 1~65535 사이의 숫자로 입력해주세요.") from None
-            validate_db_settings(settings)
+            if db_changed:
+                database = {key: field.text().strip() for key, field in self.fields.items()}
+                database["DB_PASSWORD"] = self.fields["DB_PASSWORD"].text()
+                database["DB_NAME"] = getattr(config, "DB_NAME", "News_Data_Server")
+                try:
+                    database["DB_PORT"] = int(database["DB_PORT"])
+                except ValueError:
+                    raise ValueError("포트는 1~65535 사이의 숫자로 입력해주세요.") from None
+                validate_db_settings(database)
+                settings.update(database)
             save_config(settings)
         except Exception as exc:
             QMessageBox.warning(self, "설정 저장 실패", str(exc))
             return
-        apply_theme(QApplication.instance(), settings["UI_THEME"])
+        apply_theme(QApplication.instance(), theme)
         QMessageBox.information(self, "설정 저장", "설정을 저장했습니다.")
         self.accept()

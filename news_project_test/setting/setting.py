@@ -7,7 +7,7 @@ from init import config
 
 ALLOWED_KEYS = {
     "POSTGRES_BIN", "SAVE_PATH", "BACKUP_PATH", "DB_HOST", "DB_PORT",
-    "DB_USER", "DB_PASSWORD", "DB_NAME", "SELECTED_RSS", "INSTALLED_LIBRARIES",
+    "DB_USER", "DB_PASSWORD", "DB_NAME", "SELECTED_RSS", "INSTALLED_LIBRARIES", "UI_THEME",
 }
 
 def save_config(new_settings):

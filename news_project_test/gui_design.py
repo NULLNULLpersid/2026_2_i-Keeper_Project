@@ -16,14 +16,14 @@ FONT_POINT_SIZE = 10
 QT_STYLE = "Fusion"
 
 WINDOW_SIZES = {
-    "main": (580, 390),
-    "collection_menu": (570, 370),
+    "main": (460, 390),
+    "collection_menu": (420, 370),
     "settings": (920, 550),
     "media_selection": (760, 540),
     "collection_progress": (720, 510),
     "initialization": (660, 390),
 }
-WINDOW_MINIMUM_SIZES = {"main": (520, 350), "settings": (820, 500)}
+WINDOW_MINIMUM_SIZES = {"main": (420, 350), "collection_menu": (360, 320), "settings": (820, 500)}
 PAGE_MARGINS = (28, 24, 28, 24)
 PAGE_SPACING = 16
 CARD_MARGINS = (24, 24, 24, 24)
