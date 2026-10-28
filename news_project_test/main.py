@@ -13,7 +13,7 @@ def main():
     from PySide6.QtWidgets import QApplication
     from style import apply_theme
     from main_gui import NewsApp
-    from init.warning_gui import EnvChecker
+    from init.environment_gui import EnvChecker
     app = QApplication(sys.argv)
     app.setApplicationName("뉴스기사 수집 및 분석")
     apply_theme(app)
