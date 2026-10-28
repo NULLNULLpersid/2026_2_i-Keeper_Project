@@ -40,11 +40,11 @@ async def print_rss_response(url: str) -> int:
             version = response.version
             print(
                 f"HTTP/{version.major}.{version.minor} "
-                f"{response.status} {response.reason or ''}"
+                f"{response.status} {response.reason or ""}"
             )
             # 중복 헤더(예: Set-Cookie)도 각각 출력한다.
             for name, value in response.raw_headers:
-                print(f"{name.decode('latin-1')}: {value.decode('latin-1')}")
+                print(f"{name.decode("latin-1")}: {value.decode("latin-1")}")
 
             print("\n[응답 바디 전체]")
             print(body)

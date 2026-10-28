@@ -14,7 +14,7 @@ async def exclude_duplicates(connection, items, saved_urls=None):
     for item in items:
         # 유효하지 않은 URL은 HTTP 본문 요청 후보에서 제외한다.
         try:
-            canonical = db_manager.validate_url(item['url'])
+            canonical = db_manager.validate_url(item["url"])
         except (ValueError, TypeError, KeyError, AttributeError):
             continue
         if canonical in saved_urls or canonical in unique:

@@ -28,7 +28,7 @@ async def _async_collect_news_cycle(urls, cancel_event, ui_callback, file_logger
         except asyncio.CancelledError:
             if not cancel_event.is_set():
                 raise
-            file_logger.info('수집 종료 요청: HTTP/DB 작업 취소 및 연결 정리')
+            file_logger.info("수집 종료 요청: HTTP/DB 작업 취소 및 연결 정리")
             return None
         finally:
             if not task.done():

@@ -24,22 +24,22 @@ _OWNER_PID = os.getpid()
 
 def _validate_timeout(timeout: int) -> None:
     if type(timeout) is not int or timeout < 1:
-        raise ValueError('서버 종료 timeout은 양의 정수여야 합니다.')
+        raise ValueError("서버 종료 timeout은 양의 정수여야 합니다.")
 
 def _stop_server(data: Path, ctl: str, timeout: int) -> bool:
-    state = _command([ctl, 'status', '-D', str(data)], timeout=timeout)
+    state = _command([ctl, "status", "-D", str(data)], timeout=timeout)
     if state.returncode == 3:
-        _LOGGER.info('이미 중지된 PostgreSQL 서버: %s', data)
+        _LOGGER.info("이미 중지된 PostgreSQL 서버: %s", data)
         return False
-    _check(state, 'PostgreSQL 종료 전 상태 확인')
+    _check(state, "PostgreSQL 종료 전 상태 확인")
     # fast는 미완료 트랜잭션을 롤백하고 연결을 닫은 뒤 정상 종료한다.
     # immediate 또는 OS 프로세스 강제 종료는 사용하지 않는다.
     result = _command(
-        [ctl, 'stop', '-D', str(data), '-m', 'fast', '-w', '-t', str(timeout)],
+        [ctl, "stop", "-D", str(data), "-m", "fast", "-w", "-t", str(timeout)],
         timeout=timeout + 15,
     )
-    _check(result, 'PostgreSQL 서버 종료')
-    _LOGGER.info('PostgreSQL 서버 종료 완료: %s', data)
+    _check(result, "PostgreSQL 서버 종료")
+    _LOGGER.info("PostgreSQL 서버 종료 완료: %s", data)
     return True
 
 def stop_postgresql_server(*, data: str | Path,
@@ -54,7 +54,7 @@ def stop_postgresql_server(*, data: str | Path,
     """
     _validate_timeout(timeout)
     path = Path(data).expanduser().resolve()
-    return _stop_server(path, _binary('pg_ctl', bin_path), timeout)
+    return _stop_server(path, _binary("pg_ctl", bin_path), timeout)
 
 def shutdown_registered_servers() -> None:
     # fork된 자식 프로세스가 부모 프로그램의 서버를 종료하지 않도록 한다.
@@ -68,7 +68,7 @@ def shutdown_registered_servers() -> None:
             _stop_server(data, ctl, timeout)
         except Exception:
             # 한 서버의 실패가 나머지 서버의 종료를 막지 않도록 기록하고 계속한다.
-            _LOGGER.exception('프로그램 종료 시 PostgreSQL 서버 중지 실패: %s', data)
+            _LOGGER.exception("프로그램 종료 시 PostgreSQL 서버 중지 실패: %s", data)
 
 def register_server_shutdown(*, data: str | Path,
                              bin_path: str | Path | None = None,
@@ -82,10 +82,10 @@ def register_server_shutdown(*, data: str | Path,
     global _HOOK_REGISTERED
     _validate_timeout(timeout)
     path = Path(data).expanduser().resolve()
-    ctl = str(Path(_binary('pg_ctl', bin_path)).resolve())
+    ctl = str(Path(_binary("pg_ctl", bin_path)).resolve())
     with _REGISTRY_LOCK:
         if not _HOOK_REGISTERED:
             atexit.register(shutdown_registered_servers)
             _HOOK_REGISTERED = True
         _SERVERS[path] = (ctl, timeout)
-    _LOGGER.info('프로그램 정상 종료 시 서버 중지 등록: %s', path)
+    _LOGGER.info("프로그램 정상 종료 시 서버 중지 등록: %s", path)

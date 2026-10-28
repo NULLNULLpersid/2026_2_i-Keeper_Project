@@ -142,29 +142,29 @@ async def save_embedding(connection, news_id: int, *, model_name: str, embedding
 
 def _news_labels(*, label1, label2, label1_id, label2_id, category_id):
     """문자열 라벨 또는 카테고리 ID 쌍을 검사한다. 동일한 두 라벨도 허용한다."""
-    for name, value in (('label1_id', label1_id), ('label2_id', label2_id),
-                        ('category_id', category_id)):
+    for name, value in (("label1_id", label1_id), ("label2_id", label2_id),
+                        ("category_id", category_id)):
         if value is not None and (type(value) is not int or not 1 <= value <= 9223372036854775807):
-            raise ValueError(f'{name}는 양의 BIGINT 정수 또는 None이어야 합니다.')
+            raise ValueError(f"{name}는 양의 BIGINT 정수 또는 None이어야 합니다.")
     names = []
-    for name, value in (('label1', label1), ('label2', label2)):
+    for name, value in (("label1", label1), ("label2", label2)):
         if value is not None:
             if not isinstance(value, str) or not 1 <= len(value.strip()) <= 20:
-                raise ValueError(f'{name}은 1~20자 카테고리 이름이어야 합니다.')
+                raise ValueError(f"{name}은 1~20자 카테고리 이름이어야 합니다.")
             value = value.strip()
         names.append(value)
     label1, label2 = names
     if category_id is not None:
         if label1 is not None or (label1_id is not None and label1_id != category_id):
-            raise ValueError('category_id와 첫 번째 라벨을 다르게 지정할 수 없습니다.')
+            raise ValueError("category_id와 첫 번째 라벨을 다르게 지정할 수 없습니다.")
         label1_id = category_id
     if (label1 is not None and label1_id is not None) or (label2 is not None and label2_id is not None):
-        raise ValueError('같은 라벨의 이름과 ID를 동시에 지정하지 마세요.')
+        raise ValueError("같은 라벨의 이름과 ID를 동시에 지정하지 마세요.")
     first = label1 if label1 is not None else label1_id
     second = label2 if label2 is not None else label2_id
     legacy_only = category_id is not None and label1 is None and second is None
     if (first is None) != (second is None) and not legacy_only:
-        raise ValueError('분류 결과는 label1·label2 또는 label1_id·label2_id 두 개를 전달해야 합니다.')
+        raise ValueError("분류 결과는 label1·label2 또는 label1_id·label2_id 두 개를 전달해야 합니다.")
     return first, second
 
 
@@ -181,7 +181,7 @@ async def save_news(
 
     author_email은 선택값이다. 수집한 작성자 이메일을 전달하면 저장하며,
     생략하거나 빈 문자열을 전달하면 NULL로 저장한다.
-    분류는 label1='정치', label2='경제' 또는 label1_id=1, label2_id=2로 전달한다.
+    분류는 label1="정치", label2="경제" 또는 label1_id=1, label2_id=2로 전달한다.
     문자열은 save_category()와 동일하게 최상위 카테고리 이름으로 등록/재사용한다.
     하위 카테고리를 지정하려면 해당 ID 쌍을 전달한다. 같은 라벨 두 개도 허용한다.
     미분류는 두 값 모두 생략한다. 구형 category_id는 첫 라벨로 호환 저장한다.
@@ -196,18 +196,18 @@ async def save_news(
     if author is not None and (not isinstance(author, str) or len(author) > 100):
         raise ValueError("작성자는 100자 이하여야 합니다.")
     if author_email is not None:
-        if not isinstance(author_email, str) or '\x00' in author_email:
+        if not isinstance(author_email, str) or "\x00" in author_email:
             raise ValueError("작성자 이메일은 NUL 없는 문자열 또는 None이어야 합니다.")
         author_email = author_email.strip() or None
     contacts = [] if author_contacts is None else author_contacts
     if not isinstance(contacts, list) or any(
-        not isinstance(item, dict) or set(item) != {'name', 'email'}
-        or not isinstance(item['name'], str) or not 1 <= len(item['name']) <= 100
-        or (item['email'] is not None and (
-            not isinstance(item['email'], str) or '@' not in item['email'] or '\x00' in item['email']))
+        not isinstance(item, dict) or set(item) != {"name", "email"}
+        or not isinstance(item["name"], str) or not 1 <= len(item["name"]) <= 100
+        or (item["email"] is not None and (
+            not isinstance(item["email"], str) or "@" not in item["email"] or "\x00" in item["email"]))
         for item in contacts
     ):
-        raise ValueError('작성자 연락처는 name 문자열과 email 문자열 또는 None의 목록이어야 합니다.')
+        raise ValueError("작성자 연락처는 name 문자열과 email 문자열 또는 None의 목록이어야 합니다.")
     source_url = validate_url(url)
     keyword_rows = None if keywords is None else _validate_keywords(keywords)
     if (model_name is None) != (embedding is None):
@@ -227,9 +227,9 @@ async def save_news(
         news_id = await connection.fetchval("INSERT INTO public.news_id DEFAULT VALUES RETURNING id")
         stage = await connection.fetchval(
             """SELECT CASE
-                 WHEN $1::timestamptz >= CURRENT_TIMESTAMP-INTERVAL '24 hours' THEN 'today'
-                 WHEN $1::timestamptz >= CURRENT_TIMESTAMP-INTERVAL '3 years' THEN 'news'
-                 ELSE 'old' END""", published_at,
+                 WHEN $1::timestamptz >= CURRENT_TIMESTAMP-INTERVAL "24 hours" THEN "today"
+                 WHEN $1::timestamptz >= CURRENT_TIMESTAMP-INTERVAL "3 years" THEN "news"
+                 ELSE "old" END""", published_at,
         )
         table = {"today": "today_news", "news": "news", "old": "old_news"}.get(stage)
         if table is None:
@@ -297,7 +297,7 @@ async def create_analysis_run(connection, *, period_start, period_end, bucket_un
             """INSERT INTO analysis.analysis_runs
                (period_start,period_end,bucket_unit,embedding_model_id,filters,
                 algorithm_name,algorithm_version,request_hash,status)
-               VALUES($1,$2,$3,$4,$5::jsonb,$6,$7,$8,'running')
+               VALUES($1,$2,$3,$4,$5::jsonb,$6,$7,$8,"running")
                ON CONFLICT(request_hash) DO NOTHING RETURNING id""",
             period_start, period_end, bucket_unit, embedding_model_id,
             json.dumps(filters or {}, ensure_ascii=False), algorithm_name,
@@ -362,12 +362,12 @@ async def save_analysis_results(connection, analysis_id: int, results: dict) -> 
                     connection, table, "issue_id", issue_id, columns, issue.get(key, []),
                 )
         await connection.execute(
-            """UPDATE analysis.analysis_runs SET status='completed',
+            """UPDATE analysis.analysis_runs SET status="completed",
                completed_at=CURRENT_TIMESTAMP WHERE id=$1""", analysis_id,
         )
 
 async def mark_analysis_failed(connection, analysis_id: int) -> None:
     await connection.execute(
-        """UPDATE analysis.analysis_runs SET status='failed',completed_at=CURRENT_TIMESTAMP
-           WHERE id=$1 AND status='running'""", analysis_id,
+        """UPDATE analysis.analysis_runs SET status="failed",completed_at=CURRENT_TIMESTAMP
+           WHERE id=$1 AND status="running"""", analysis_id,
     )

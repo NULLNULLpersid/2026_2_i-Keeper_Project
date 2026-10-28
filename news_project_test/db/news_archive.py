@@ -7,7 +7,7 @@ NEWS_COLUMNS = (
     "published_at,author,author_email,content,author_contacts"
 )
 NEWS_UNION = " UNION ALL ".join(
-    f"SELECT {NEWS_COLUMNS},'{stage}'::text AS storage_type FROM public.{table}"
+    f"SELECT {NEWS_COLUMNS},"{stage}"::text AS storage_type FROM public.{table}"
     for table, stage in (("today_news", "today"), ("news", "news"), ("old_news", "old"))
 )
 
@@ -30,7 +30,7 @@ async def archive_news(connection, *, batch_size: int = 1000) -> dict[str, int]:
             moved = await connection.fetch(
                 f"""WITH candidates AS (
                        SELECT news_id FROM public.{source}
-                       WHERE published_at < CURRENT_TIMESTAMP-INTERVAL '{age}'
+                       WHERE published_at < CURRENT_TIMESTAMP-INTERVAL "{age}"
                        ORDER BY published_at,news_id
                        LIMIT $1 FOR UPDATE SKIP LOCKED
                    ), deleted AS (

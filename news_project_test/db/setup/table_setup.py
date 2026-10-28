@@ -76,7 +76,7 @@ CREATE TABLE public.today_news (
     author VARCHAR(100),
 
     author_email TEXT,
-    author_contacts JSONB NOT NULL DEFAULT '[]'::jsonb,
+    author_contacts JSONB NOT NULL DEFAULT "[]"::jsonb,
 
     content TEXT NOT NULL
 );
@@ -105,7 +105,7 @@ CREATE TABLE public.news (
     author VARCHAR(100),
 
     author_email TEXT,
-    author_contacts JSONB NOT NULL DEFAULT '[]'::jsonb,
+    author_contacts JSONB NOT NULL DEFAULT "[]"::jsonb,
 
     content TEXT
 );
@@ -134,7 +134,7 @@ CREATE TABLE public.old_news (
     author VARCHAR(100),
 
     author_email TEXT,
-    author_contacts JSONB NOT NULL DEFAULT '[]'::jsonb,
+    author_contacts JSONB NOT NULL DEFAULT "[]"::jsonb,
 
     content TEXT
 );
@@ -145,7 +145,7 @@ CREATE TABLE public.news_location (
     news_id BIGINT PRIMARY KEY
         REFERENCES public.news_id(id),
 
-    storage_type VARCHAR CHECK(storage_type IN ('today', 'news', 'old'))
+    storage_type VARCHAR CHECK(storage_type IN ("today", "news", "old"))
 );
 """
 
@@ -206,7 +206,7 @@ CREATE TABLE public.learning_data_news (
 
     dataset_version VARCHAR,
 
-    data_split VARCHAR CHECK(data_split IN ('train', 'valid', 'test'))
+    data_split VARCHAR CHECK(data_split IN ("train", "valid", "test"))
 );
 """
 
@@ -218,7 +218,7 @@ CREATE TABLE analysis.analysis_runs (
 
     period_end TIMESTAMPTZ,
 
-    bucket_unit VARCHAR CHECK(bucket_unit IN ('hour', 'day', 'week', 'month')),
+    bucket_unit VARCHAR CHECK(bucket_unit IN ("hour", "day", "week", "month")),
 
     embedding_model_id SMALLINT
         REFERENCES public.embedding_models(id),
@@ -231,7 +231,7 @@ CREATE TABLE analysis.analysis_runs (
 
     request_hash BYTEA UNIQUE,
 
-    status VARCHAR CHECK(status IN ('running', 'completed', 'failed')),
+    status VARCHAR CHECK(status IN ("running", "completed", "failed")),
 
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
 
@@ -454,31 +454,31 @@ CREATE TABLE analysis.analysis_similar_news (
 """
 
 TABLE_DEFINITIONS = (
-    ('public.news_id', CREATE_NEWS_ID, ()),
-    ('public.publishers', CREATE_PUBLISHERS, ()),
-    ('public.categories', CREATE_CATEGORIES, ('CREATE UNIQUE INDEX uq_categories_root_name ON public.categories(name) WHERE parent_id IS NULL',)),
-    ('public.keywords', CREATE_KEYWORDS, ()),
-    ('public.embedding_models', CREATE_EMBEDDING_MODELS, ()),
-    ('public.today_news', CREATE_TODAY_NEWS, ('CREATE INDEX ix_today_news_published_at ON public.today_news(published_at)', 'CREATE UNIQUE INDEX uq_today_news_url ON public.today_news(url)')),
-    ('public.news', CREATE_NEWS, ('CREATE INDEX ix_news_published_at ON public.news(published_at)',)),
-    ('public.old_news', CREATE_OLD_NEWS, ('CREATE INDEX ix_old_news_published_at ON public.old_news(published_at)',)),
-    ('public.news_location', CREATE_NEWS_LOCATION, ()),
-    ('public.news_keywords', CREATE_NEWS_KEYWORDS, ('CREATE INDEX ix_news_keywords_keyword ON public.news_keywords(keyword_id)',)),
-    ('public.news_embeddings', CREATE_NEWS_EMBEDDINGS, ()),
-    ('public.news_embedding_locator', CREATE_NEWS_EMBEDDING_LOCATOR, ()),
-    ('public.learning_data_news', CREATE_LEARNING_DATA_NEWS, ()),
-    ('analysis.analysis_runs', CREATE_ANALYSIS_RUNS, ()),
-    ('analysis.analysis_overview', CREATE_ANALYSIS_OVERVIEW, ()),
-    ('analysis.analysis_keyword_stats', CREATE_ANALYSIS_KEYWORD_STATS, ()),
-    ('analysis.analysis_category_stats', CREATE_ANALYSIS_CATEGORY_STATS, ()),
-    ('analysis.analysis_publisher_stats', CREATE_ANALYSIS_PUBLISHER_STATS, ()),
-    ('analysis.analysis_author_stats', CREATE_ANALYSIS_AUTHOR_STATS, ()),
-    ('analysis.analysis_time_buckets', CREATE_ANALYSIS_TIME_BUCKETS, ()),
-    ('analysis.analysis_issues', CREATE_ANALYSIS_ISSUES, ()),
-    ('analysis.analysis_issue_members', CREATE_ANALYSIS_ISSUE_MEMBERS, ('CREATE INDEX ix_issue_members_news ON analysis.analysis_issue_members(news_id)',)),
-    ('analysis.analysis_issue_keywords', CREATE_ANALYSIS_ISSUE_KEYWORDS, ()),
-    ('analysis.analysis_issue_timeseries', CREATE_ANALYSIS_ISSUE_TIMESERIES, ()),
-    ('analysis.analysis_similar_news', CREATE_ANALYSIS_SIMILAR_NEWS, ()),
+    ("public.news_id", CREATE_NEWS_ID, ()),
+    ("public.publishers", CREATE_PUBLISHERS, ()),
+    ("public.categories", CREATE_CATEGORIES, ("CREATE UNIQUE INDEX uq_categories_root_name ON public.categories(name) WHERE parent_id IS NULL",)),
+    ("public.keywords", CREATE_KEYWORDS, ()),
+    ("public.embedding_models", CREATE_EMBEDDING_MODELS, ()),
+    ("public.today_news", CREATE_TODAY_NEWS, ("CREATE INDEX ix_today_news_published_at ON public.today_news(published_at)", "CREATE UNIQUE INDEX uq_today_news_url ON public.today_news(url)")),
+    ("public.news", CREATE_NEWS, ("CREATE INDEX ix_news_published_at ON public.news(published_at)",)),
+    ("public.old_news", CREATE_OLD_NEWS, ("CREATE INDEX ix_old_news_published_at ON public.old_news(published_at)",)),
+    ("public.news_location", CREATE_NEWS_LOCATION, ()),
+    ("public.news_keywords", CREATE_NEWS_KEYWORDS, ("CREATE INDEX ix_news_keywords_keyword ON public.news_keywords(keyword_id)",)),
+    ("public.news_embeddings", CREATE_NEWS_EMBEDDINGS, ()),
+    ("public.news_embedding_locator", CREATE_NEWS_EMBEDDING_LOCATOR, ()),
+    ("public.learning_data_news", CREATE_LEARNING_DATA_NEWS, ()),
+    ("analysis.analysis_runs", CREATE_ANALYSIS_RUNS, ()),
+    ("analysis.analysis_overview", CREATE_ANALYSIS_OVERVIEW, ()),
+    ("analysis.analysis_keyword_stats", CREATE_ANALYSIS_KEYWORD_STATS, ()),
+    ("analysis.analysis_category_stats", CREATE_ANALYSIS_CATEGORY_STATS, ()),
+    ("analysis.analysis_publisher_stats", CREATE_ANALYSIS_PUBLISHER_STATS, ()),
+    ("analysis.analysis_author_stats", CREATE_ANALYSIS_AUTHOR_STATS, ()),
+    ("analysis.analysis_time_buckets", CREATE_ANALYSIS_TIME_BUCKETS, ()),
+    ("analysis.analysis_issues", CREATE_ANALYSIS_ISSUES, ()),
+    ("analysis.analysis_issue_members", CREATE_ANALYSIS_ISSUE_MEMBERS, ("CREATE INDEX ix_issue_members_news ON analysis.analysis_issue_members(news_id)",)),
+    ("analysis.analysis_issue_keywords", CREATE_ANALYSIS_ISSUE_KEYWORDS, ()),
+    ("analysis.analysis_issue_timeseries", CREATE_ANALYSIS_ISSUE_TIMESERIES, ()),
+    ("analysis.analysis_similar_news", CREATE_ANALYSIS_SIMILAR_NEWS, ()),
 )
 
 @_logged
@@ -486,36 +486,36 @@ async def ensure_embedding_partitions(connection, years: Iterable[int]) -> None:
     """필요 연도를 명시해 호출. 과거/미래 기사 INSERT 전에 해당 연도를 준비한다."""
     years = tuple(years)
     if any(type(year) is not int or not 1 <= year <= 9998 for year in years):
-        raise ValueError('파티션 연도는 1~9998 정수여야 합니다.')
+        raise ValueError("파티션 연도는 1~9998 정수여야 합니다.")
     async with connection.transaction():
-        await connection.execute('SELECT pg_advisory_xact_lock(736204185901)')
+        await connection.execute("SELECT pg_advisory_xact_lock(736204185901)")
         for year in sorted(set(years)):
-            name = f'public.news_embeddings_{year}'
-            if await connection.fetchval('SELECT to_regclass($1)', name) is None:
-                _LOGGER.info('연도 파티션 생성: %s', name)
-                await connection.execute(f'''CREATE TABLE {name}
+            name = f"public.news_embeddings_{year}"
+            if await connection.fetchval("SELECT to_regclass($1)", name) is None:
+                _LOGGER.info("연도 파티션 생성: %s", name)
+                await connection.execute(f"""CREATE TABLE {name}
                     PARTITION OF public.news_embeddings
-                    FOR VALUES FROM ({year}) TO ({year + 1})''')
+                    FOR VALUES FROM ({year}) TO ({year + 1})""")
             else:
-                _LOGGER.info('기존 연도 파티션 확인: %s', name)
-                attached = await connection.fetchval('''SELECT EXISTS (
+                _LOGGER.info("기존 연도 파티션 확인: %s", name)
+                attached = await connection.fetchval("""SELECT EXISTS (
                     SELECT 1 FROM pg_inherits WHERE inhrelid=to_regclass($1)
-                    AND inhparent='public.news_embeddings'::regclass)''', name)
+                    AND inhparent="public.news_embeddings"::regclass)""", name)
                 if not attached:
-                    raise RuntimeError(f'{name}은 임베딩 부모에 연결된 파티션이 아닙니다.')
+                    raise RuntimeError(f"{name}은 임베딩 부모에 연결된 파티션이 아닙니다.")
 
 async def check_vector_extension(connection) -> None:
     """DB에 확장을 만들기 전에 PostgreSQL 서버의 설치 가능 목록을 확인한다."""
     available = await connection.fetchval(
-        "SELECT EXISTS (SELECT 1 FROM pg_available_extensions WHERE name='vector')"
+        "SELECT EXISTS (SELECT 1 FROM pg_available_extensions WHERE name="vector")"
     )
     if not available:
-        version = await connection.fetchval('SHOW server_version')
+        version = await connection.fetchval("SHOW server_version")
         raise RuntimeError(
-            f'접속한 PostgreSQL {version} 서버에서 pgvector 확장 설치 파일을 찾지 못했습니다.\n'
-            'Python의 pip install pgvector와 별도로 PostgreSQL 서버용 확장을 설치해야 합니다.\n'
-            '서버와 같은 PostgreSQL 버전/아키텍처용 pgvector를 설치한 뒤 다시 실행하세요.\n'
-            'Windows 설치 안내: https://github.com/pgvector/pgvector#windows'
+            f"접속한 PostgreSQL {version} 서버에서 pgvector 확장 설치 파일을 찾지 못했습니다.\n"
+            "Python의 pip install pgvector와 별도로 PostgreSQL 서버용 확장을 설치해야 합니다.\n"
+            "서버와 같은 PostgreSQL 버전/아키텍처용 pgvector를 설치한 뒤 다시 실행하세요.\n"
+            "Windows 설치 안내: https://github.com/pgvector/pgvector#windows"
         )
 
 
@@ -525,22 +525,22 @@ async def step_3_prepare_tables(connection, years: Iterable[int]) -> None:
     await check_vector_extension(connection)
     async with connection.transaction():
         from ..news_archive import NEWS_WRITE_LOCK
-        await connection.execute('SELECT pg_advisory_xact_lock($1)', NEWS_WRITE_LOCK)
-        await connection.execute('SELECT pg_advisory_xact_lock(736204185901)')
-        await connection.execute('CREATE SCHEMA IF NOT EXISTS analysis')
-        _LOGGER.info('pgvector 확장 확인 및 필요 시 생성')
-        await connection.execute('CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public')
-        if await connection.fetchval("SELECT to_regtype('public.halfvec')") is None:
-            raise RuntimeError('public 스키마에 pgvector >= 0.7의 halfvec 타입이 필요합니다.')
+        await connection.execute("SELECT pg_advisory_xact_lock($1)", NEWS_WRITE_LOCK)
+        await connection.execute("SELECT pg_advisory_xact_lock(736204185901)")
+        await connection.execute("CREATE SCHEMA IF NOT EXISTS analysis")
+        _LOGGER.info("pgvector 확장 확인 및 필요 시 생성")
+        await connection.execute("CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public")
+        if await connection.fetchval("SELECT to_regtype("public.halfvec")") is None:
+            raise RuntimeError("public 스키마에 pgvector >= 0.7의 halfvec 타입이 필요합니다.")
         for name, create_sql, indexes in TABLE_DEFINITIONS:
-            if await connection.fetchval('SELECT to_regclass($1)', name) is None:
-                _LOGGER.info('3.1 누락 테이블 생성: %s', name)
+            if await connection.fetchval("SELECT to_regclass($1)", name) is None:
+                _LOGGER.info("3.1 누락 테이블 생성: %s", name)
                 await connection.execute(create_sql)
                 for index in indexes:
-                    _LOGGER.info('인덱스 생성: %s', index)
+                    _LOGGER.info("인덱스 생성: %s", index)
                     await connection.execute(index)
             else:
-                _LOGGER.info('3.2 기존 테이블 사용: %s', name)
+                _LOGGER.info("3.2 기존 테이블 사용: %s", name)
         await migrate_news_labels(connection)
         await migrate_author_email(connection)
         await migrate_original_urls(connection)
@@ -554,18 +554,18 @@ async def migrate_news_labels(connection) -> None:
     """
     from ..news_archive import NEWS_WRITE_LOCK
     async with connection.transaction():
-        await connection.execute('SELECT pg_advisory_xact_lock($1)', NEWS_WRITE_LOCK)
-        for table in ('today_news', 'news', 'old_news'):
-            columns = {row['column_name'] for row in await connection.fetch(
+        await connection.execute("SELECT pg_advisory_xact_lock($1)", NEWS_WRITE_LOCK)
+        for table in ("today_news", "news", "old_news"):
+            columns = {row["column_name"] for row in await connection.fetch(
                 "SELECT column_name FROM information_schema.columns "
-                "WHERE table_schema='public' AND table_name=$1", table,
+                "WHERE table_schema="public" AND table_name=$1", table,
             )}
-            if 'category_id' in columns and 'label1_id' not in columns:
+            if "category_id" in columns and "label1_id" not in columns:
                 # RENAME은 기존 값과 외래키 연결을 함께 유지한다.
                 await connection.execute(
-                    f'ALTER TABLE public.{table} RENAME COLUMN category_id TO label1_id'
+                    f"ALTER TABLE public.{table} RENAME COLUMN category_id TO label1_id"
                 )
-            elif 'category_id' in columns and 'label1_id' in columns:
+            elif "category_id" in columns and "label1_id" in columns:
                 # 중간 버전의 두 컬럼이 공존하면 서로 다른 값을 조용히 덮어쓰지 않는다.
                 conflicting = await connection.fetchval(
                     f"SELECT EXISTS (SELECT 1 FROM public.{table} "
@@ -573,18 +573,18 @@ async def migrate_news_labels(connection) -> None:
                     "AND category_id <> label1_id)"
                 )
                 if conflicting:
-                    raise RuntimeError(f'{table}: category_id와 label1_id가 충돌합니다.')
+                    raise RuntimeError(f"{table}: category_id와 label1_id가 충돌합니다.")
                 await connection.execute(
-                    f'UPDATE public.{table} SET label1_id=category_id '
-                    'WHERE label1_id IS NULL AND category_id IS NOT NULL'
+                    f"UPDATE public.{table} SET label1_id=category_id "
+                    "WHERE label1_id IS NULL AND category_id IS NOT NULL"
                 )
             await connection.execute(
-                f'ALTER TABLE public.{table} ADD COLUMN IF NOT EXISTS '
-                'label1_id BIGINT REFERENCES public.categories(id)'
+                f"ALTER TABLE public.{table} ADD COLUMN IF NOT EXISTS "
+                "label1_id BIGINT REFERENCES public.categories(id)"
             )
             await connection.execute(
-                f'ALTER TABLE public.{table} ADD COLUMN IF NOT EXISTS '
-                'label2_id BIGINT REFERENCES public.categories(id)'
+                f"ALTER TABLE public.{table} ADD COLUMN IF NOT EXISTS "
+                "label2_id BIGINT REFERENCES public.categories(id)"
             )
 
 
@@ -592,13 +592,13 @@ async def migrate_author_email(connection) -> None:
     """기존 기사를 유지하며 세 본문 테이블에 선택적 작성자 이메일 컬럼을 추가한다."""
     from ..news_archive import NEWS_WRITE_LOCK
     async with connection.transaction():
-        await connection.execute('SELECT pg_advisory_xact_lock($1)', NEWS_WRITE_LOCK)
-        for table in ('today_news', 'news', 'old_news'):
+        await connection.execute("SELECT pg_advisory_xact_lock($1)", NEWS_WRITE_LOCK)
+        for table in ("today_news", "news", "old_news"):
             await connection.execute(
-                f'ALTER TABLE public.{table} ADD COLUMN IF NOT EXISTS author_email TEXT'
+                f"ALTER TABLE public.{table} ADD COLUMN IF NOT EXISTS author_email TEXT"
             )
             await connection.execute(
-                f"ALTER TABLE public.{table} ADD COLUMN IF NOT EXISTS author_contacts JSONB NOT NULL DEFAULT '[]'::jsonb"
+                f"ALTER TABLE public.{table} ADD COLUMN IF NOT EXISTS author_contacts JSONB NOT NULL DEFAULT "[]"::jsonb"
             )
 
 
@@ -607,36 +607,36 @@ async def validate_schema(connection) -> None:
     import re
     for table, ddl, _ in TABLE_DEFINITIONS:
         expected = set(re.findall(
-            r'^\s*([a-z_][a-z_0-9]*)\s+(?:BIGINT|SMALLINT|INTEGER|TEXT|VARCHAR|BYTEA|TIMESTAMPTZ|DOUBLE|JSONB|public\.halfvec)\b',
+            r"^\s*([a-z_][a-z_0-9]*)\s+(?:BIGINT|SMALLINT|INTEGER|TEXT|VARCHAR|BYTEA|TIMESTAMPTZ|DOUBLE|JSONB|public\.halfvec)\b",
             ddl, flags=re.MULTILINE,
         ))
-        actual = {row['attname'] for row in await connection.fetch(
-            'SELECT attname FROM pg_attribute WHERE attrelid=to_regclass($1) '
-            'AND attnum > 0 AND NOT attisdropped', table
+        actual = {row["attname"] for row in await connection.fetch(
+            "SELECT attname FROM pg_attribute WHERE attrelid=to_regclass($1) "
+            "AND attnum > 0 AND NOT attisdropped", table
         )}
         missing = expected - actual
         if missing:
-            raise RuntimeError(f'{table}: 필수 열 {sorted(missing)} 누락. 기존 DB 스키마 마이그레이션이 필요합니다.')
+            raise RuntimeError(f"{table}: 필수 열 {sorted(missing)} 누락. 기존 DB 스키마 마이그레이션이 필요합니다.")
 
 
 async def migrate_original_urls(connection) -> None:
     """기존 뉴스의 URL은 유지하고 폐기된 컬럼을 트랜잭션 안에서 제거한다."""
     from ..news_archive import NEWS_WRITE_LOCK
     async with connection.transaction():
-        await connection.execute('SELECT pg_advisory_xact_lock($1)', NEWS_WRITE_LOCK)
+        await connection.execute("SELECT pg_advisory_xact_lock($1)", NEWS_WRITE_LOCK)
         legacy = await connection.fetchval("""SELECT EXISTS (
             SELECT 1 FROM information_schema.columns
-            WHERE table_schema='public'
-              AND table_name IN ('today_news','news','old_news')
-              AND column_name IN ('canonical_url','canonical_url_hash'))""")
-        index_exists = await connection.fetchval("SELECT to_regclass('public.uq_today_news_url')")
+            WHERE table_schema="public"
+              AND table_name IN ("today_news","news","old_news")
+              AND column_name IN ("canonical_url","canonical_url_hash"))""")
+        index_exists = await connection.fetchval("SELECT to_regclass("public.uq_today_news_url")")
         if not legacy and index_exists is not None:
             return
-        await connection.execute('LOCK TABLE public.today_news, public.news, public.old_news IN ACCESS EXCLUSIVE MODE')
+        await connection.execute("LOCK TABLE public.today_news, public.news, public.old_news IN ACCESS EXCLUSIVE MODE")
         if await connection.fetchval("""SELECT EXISTS (
             SELECT 1 FROM public.today_news GROUP BY url HAVING count(*) > 1)"""):
-            raise RuntimeError('today_news에 동일한 원본 URL이 여러 건 있습니다. 중복 기사를 확인한 뒤 다시 연결하세요. DB 변경은 취소됩니다.')
-        await connection.execute('CREATE UNIQUE INDEX IF NOT EXISTS uq_today_news_url ON public.today_news(url)')
-        for table in ('today_news', 'news', 'old_news'):
-            await connection.execute(f'ALTER TABLE public.{table} DROP COLUMN IF EXISTS canonical_url, DROP COLUMN IF EXISTS canonical_url_hash')
-        _LOGGER.info('원본 URL 비교 스키마 전환 완료')
+            raise RuntimeError("today_news에 동일한 원본 URL이 여러 건 있습니다. 중복 기사를 확인한 뒤 다시 연결하세요. DB 변경은 취소됩니다.")
+        await connection.execute("CREATE UNIQUE INDEX IF NOT EXISTS uq_today_news_url ON public.today_news(url)")
+        for table in ("today_news", "news", "old_news"):
+            await connection.execute(f"ALTER TABLE public.{table} DROP COLUMN IF EXISTS canonical_url, DROP COLUMN IF EXISTS canonical_url_hash")
+        _LOGGER.info("원본 URL 비교 스키마 전환 완료")

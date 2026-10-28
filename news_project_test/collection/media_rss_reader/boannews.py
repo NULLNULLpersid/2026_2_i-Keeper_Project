@@ -6,18 +6,18 @@ from urllib.parse import unquote, urlsplit
 from lxml import html as lxml_html
 from . import common
 
-PUBLISHER_NAME = '보안뉴스'
-ALIASES = ('보안뉴스', '보안 뉴스')
+PUBLISHER_NAME = "보안뉴스"
+ALIASES = ("보안뉴스", "보안 뉴스")
 
 def parse_feed(payload):
     results = []
     for item in common.rss_items(payload):
-        url = common.field(item, 'link')
+        url = common.field(item, "link")
         if url:
             results.append(dict(publisher_name=PUBLISHER_NAME, url=url,
-                title=common.field(item, 'title'),
-                author=clean_author(common.field(item, 'author', 'creator')),
-                published_at=common.parse_datetime(common.field(item, 'pubDate'))))
+                title=common.field(item, "title"),
+                author=clean_author(common.field(item, "author", "creator")),
+                published_at=common.parse_datetime(common.field(item, "pubDate"))))
     return results
 
 
@@ -27,29 +27,29 @@ def clean_author(value):
 
 def extract_author(html, metadata=None, content=None):
     return common.extract_url_author(html, metadata, content, PUBLISHER_NAME, ALIASES,
-        extra_xpaths=('//*[@id="news_util"]', '//*[contains(@class,"writer")]',))
+        extra_xpaths=("//*[@id="news_util"]", "//*[contains(@class,"writer")]",))
 
 
 def _class_xpath(class_name: str) -> str:
     return (
-        "contains(concat(' ', normalize-space(@class), ' '), "
-        f"' {class_name} ')"
+        "contains(concat(" ", normalize-space(@class), " "), "
+        f"" {class_name} ")"
     )
 
 
 def _clean_name(text: str) -> str:
-    text = re.sub(r'\s+', ' ', text).strip()
-    return re.sub(r'\s*기자\s*$', '', text).strip()
+    text = re.sub(r"\s+", " ", text).strip()
+    return re.sub(r"\s*기자\s*$", "", text).strip()
 
 
 def _email_from_link(link) -> str | None:
-    href = (link.get('href') or '').strip()
-    if urlsplit(href).scheme.lower() == 'mailto':
+    href = (link.get("href") or "").strip()
+    if urlsplit(href).scheme.lower() == "mailto":
         value = unquote(urlsplit(href).path).strip()
     else:
         value = link.text_content().strip()
     # 한 작성자 영역의 단일 이메일 주소만 인정한다.
-    if re.fullmatch(r'[^\s@,;<>]+@[^\s@,;<>]+\.[^\s@,;<>]+', value):
+    if re.fullmatch(r"[^\s@,;<>]+@[^\s@,;<>]+\.[^\s@,;<>]+", value):
         return value
     return None
 
@@ -65,22 +65,22 @@ def extract_author_contacts(html: str | bytes, content=None) -> list[dict[str, s
         return []
     if isinstance(html, bytes):
         # 보안뉴스 응답의 명시된 charset은 UTF-8이다.
-        html = html.decode('utf-8', errors='replace')
+        html = html.decode("utf-8", errors="replace")
     root = lxml_html.fromstring(html)
     articles = root.xpath(
-        f"descendant-or-self::article[{_class_xpath('article-writer')}]"
+        f"descendant-or-self::article[{_class_xpath("article-writer")}]"
     )
     contacts: list[dict[str, str | None]] = []
     seen: set[tuple[str, str | None]] = set()
     for article in articles:
-        blocks = article.xpath(f".//*[{_class_xpath('article-writer-content')}]")
+        blocks = article.xpath(f".//*[{_class_xpath("article-writer-content")}]")
         for block in blocks or [article]:
             names = list(dict.fromkeys(
-                name for node in block.xpath(f".//*[{_class_xpath('article-writer-name')}]")
+                name for node in block.xpath(f".//*[{_class_xpath("article-writer-name")}]")
                 if (name := _clean_name(node.text_content()))
             ))
             emails = list(dict.fromkeys(
-                email for link in block.xpath(f".//a[{_class_xpath('article-writer-mail')}]")
+                email for link in block.xpath(f".//a[{_class_xpath("article-writer-mail")}]")
                 if (email := _email_from_link(link))
             ))
             for name in names:
@@ -89,5 +89,5 @@ def extract_author_contacts(html: str | bytes, content=None) -> list[dict[str, s
                     key = (name, email)
                     if key not in seen:
                         seen.add(key)
-                        contacts.append({'name': name, 'email': email})
+                        contacts.append({"name": name, "email": email})
     return contacts

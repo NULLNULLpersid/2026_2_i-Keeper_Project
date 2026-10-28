@@ -18,20 +18,20 @@ from .setup.table_setup import (
 
 def _connection_values(*, storage_path, user, password, host, port, database,
                        bin_path, embedding_years, timeout):
-    if host not in ('localhost', '127.0.0.1', '::1'):
-        raise ValueError('물리 경로를 관리하는 이 함수는 로컬 PostgreSQL 서버 전용입니다.')
-    if not user or not password or any(ch in password for ch in '\r\n\x00'):
-        raise ValueError('사용자/암호가 필요하며 암호에 줄바꿈 또는 NUL을 넣을 수 없습니다.')
+    if host not in ("localhost", "127.0.0.1", "::1"):
+        raise ValueError("물리 경로를 관리하는 이 함수는 로컬 PostgreSQL 서버 전용입니다.")
+    if not user or not password or any(ch in password for ch in "\r\n\x00"):
+        raise ValueError("사용자/암호가 필요하며 암호에 줄바꿈 또는 NUL을 넣을 수 없습니다.")
     if type(port) is not int or not 1 <= port <= 65535 or type(timeout) is not int or timeout < 1:
-        raise ValueError('port 또는 timeout 값이 올바르지 않습니다.')
-    if not database or '\x00' in database or len(database.encode('utf-8')) > 63:
-        raise ValueError('데이터베이스 이름은 1~63 UTF-8 바이트여야 합니다.')
+        raise ValueError("port 또는 timeout 값이 올바르지 않습니다.")
+    if not database or "\x00" in database or len(database.encode("utf-8")) > 63:
+        raise ValueError("데이터베이스 이름은 1~63 UTF-8 바이트여야 합니다.")
     years = tuple(embedding_years) if embedding_years is not None else tuple(
         range(2025, datetime.now(timezone.utc).year + 2))
     if any(type(year) is not int or not 1 <= year <= 9998 for year in years):
-        raise ValueError('embedding_years에는 1~9998 정수만 지정하세요.')
+        raise ValueError("embedding_years에는 1~9998 정수만 지정하세요.")
     base = Path(storage_path).expanduser().resolve()
-    data = base if (base / 'PG_VERSION').is_file() or base.name == 'News_Data_Server' else base / 'News_Data_Server'
+    data = base if (base / "PG_VERSION").is_file() or base.name == "News_Data_Server" else base / "News_Data_Server"
     return data, years
 
 async def _prepare_connection(connection, years):
@@ -40,7 +40,7 @@ async def _prepare_connection(connection, years):
     try:
         await step_3_prepare_tables(connection, years)
         await validate_schema(connection)
-        await register_vector(connection, schema='public')
+        await register_vector(connection, schema="public")
         return connection
     except BaseException:
         await connection.close()
@@ -48,8 +48,8 @@ async def _prepare_connection(connection, years):
 
 @_logged
 async def initial_connect_news_database(*, storage_path: str | Path, user: str,
-                                        password: str, host: str = '127.0.0.1',
-                                        port: int = 5432, database: str = 'News_Data_Server',
+                                        password: str, host: str = "127.0.0.1",
+                                        port: int = 5432, database: str = "News_Data_Server",
                                         bin_path: str | Path | None = None,
                                         embedding_years: Iterable[int] | None = None,
                                         timeout: int = 30):
@@ -67,8 +67,8 @@ async def initial_connect_news_database(*, storage_path: str | Path, user: str,
 
 @_logged
 async def reconnect_news_database(*, storage_path: str | Path, user: str,
-                                  password: str, host: str = '127.0.0.1',
-                                  port: int = 5432, database: str = 'News_Data_Server',
+                                  password: str, host: str = "127.0.0.1",
+                                  port: int = 5432, database: str = "News_Data_Server",
                                   bin_path: str | Path | None = None,
                                   embedding_years: Iterable[int] | None = None,
                                   timeout: int = 30):
@@ -97,10 +97,10 @@ def validate_url(url: str) -> str:
     """HTTP(S) URL의 형식만 검사하고 원본 문자열을 그대로 반환한다."""
     from urllib.parse import urlsplit
     if not isinstance(url, str) or not url or any(c.isspace() for c in url):
-        raise ValueError('공백 없는 HTTP(S) 기사 URL이 필요합니다.')
+        raise ValueError("공백 없는 HTTP(S) 기사 URL이 필요합니다.")
     parsed = urlsplit(url)
-    if parsed.scheme.lower() not in ('http', 'https') or not parsed.hostname or parsed.username or parsed.password:
-        raise ValueError('인증 정보 없는 HTTP(S) 기사 URL이 필요합니다.')
+    if parsed.scheme.lower() not in ("http", "https") or not parsed.hostname or parsed.username or parsed.password:
+        raise ValueError("인증 정보 없는 HTTP(S) 기사 URL이 필요합니다.")
     _ = parsed.port  # 잘못된 포트만 검사하며 URL을 재작성하지 않는다.
     return url
 
@@ -125,7 +125,7 @@ async def configured_database(settings=None, **overrides):
         connection = await reconnect_news_database(**options)
     except (asyncpg.PostgresConnectionError, asyncpg.InvalidCatalogNameError,
             OSError, asyncio.TimeoutError) as error:
-        _LOGGER.info('기존 DB 재연결 실패. 초기 연결 경로로 전환: %s', type(error).__name__)
+        _LOGGER.info("기존 DB 재연결 실패. 초기 연결 경로로 전환: %s", type(error).__name__)
         connection = await initial_connect_news_database(**options)
     try:
         yield connection
