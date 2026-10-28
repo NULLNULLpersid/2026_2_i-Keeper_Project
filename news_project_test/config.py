@@ -18,7 +18,7 @@ DB_USER = "postgres"
 DB_PASSWORD = "postgres"
 
 # 사용할 데이터베이스 이름
-DB_NAME = "News_Data_Server"
+DB_NAME = "News DataBase"
 
 #############################
 # [RSS 피드 설정]
@@ -54,7 +54,7 @@ SELECTED_RSS = ['보안 뉴스']
 # [설치된 라이브러리 확인]
 #############################
 
-INSTALLED_LIBRARIES = ['PySide6', 'aiohttp', 'asyncpg', 'pgvector', 'feedparser', 'trafilatura', 'numpy']
+INSTALLED_LIBRARIES = ['PySide6', 'aiohttp', 'asyncpg', 'pgvector', 'feedparser', 'trafilatura', 'numpy', 'kiwipiepy']
 
 #############################
 # [설정한 UI 테마 확인]
