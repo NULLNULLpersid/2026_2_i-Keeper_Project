@@ -13,6 +13,7 @@ LIBRARY_LIST = [
     ("feedparser", "feedparser"),
     ("trafilatura", "trafilatura"),
     ("numpy", "numpy"),
+    ("kiwipiepy", "kiwipiepy")
 ]
 
 

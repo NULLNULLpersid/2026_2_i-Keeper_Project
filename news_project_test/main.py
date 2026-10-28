@@ -11,7 +11,7 @@ def main():
 
     # PySide6 자동 설치와 import 검증이 끝난 뒤 GUI를 가져온다.
     from PySide6.QtWidgets import QApplication
-    from gui_design import apply_theme
+    from news_project_test.style import apply_theme
     from main_gui import NewsApp
     from init.init_gui import EnvChecker
     app = QApplication(sys.argv)

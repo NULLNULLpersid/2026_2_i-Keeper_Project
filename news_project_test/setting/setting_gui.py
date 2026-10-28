@@ -4,7 +4,7 @@ from PySide6.QtWidgets import (
     QGridLayout, QGroupBox, QButtonGroup, QFileDialog, QMessageBox, QCheckBox, QRadioButton,
 )
 from init import config
-from gui_design import page_layout, button, configure_window, FORM_SPACING, apply_theme
+from style import page_layout, button, configure_window, FORM_SPACING, apply_theme
 from .setting import save_config, validate_db_settings
 
 class DatabaseSettingWindow(QDialog):

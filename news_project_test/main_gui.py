@@ -1,7 +1,7 @@
 """메인 화면과 뉴스 수집 메뉴."""
 from PySide6.QtWidgets import QMainWindow, QWidget, QDialog, QFrame, QLabel
 from init import config
-from gui_design import page_layout, button, configure_window, card_layout
+from style import page_layout, button, configure_window, card_layout
 from setting.setting_gui import DatabaseSettingWindow
 from collection.media_select.media_select_gui import MediaSelectionWindow
 from collection.collection_gui import CrawlerProgressWindow

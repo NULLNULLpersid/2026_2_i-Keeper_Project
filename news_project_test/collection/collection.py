@@ -1,18 +1,20 @@
 """수집 시작·DB 연결 수명주기·중단 신호를 관리한다."""
 import asyncio
 from init import config
-from db import setting
-from .crawler.scraping_run import collect_with_connection
+from db import connection as db_connection
+from .crawler.collect_news import collect_with_connection
+
 
 def collect_news_cycle(urls, path, cancel_event, ui_callback, file_logger):
     """GUI 작업 스레드용 진입점. 기존 GUI 호출 인수를 유지한다."""
     return asyncio.run(_async_collect_news_cycle(urls, cancel_event, ui_callback, file_logger, path))
 
+
 async def _async_collect_news_cycle(urls, cancel_event, ui_callback, file_logger, path=None):
     if cancel_event.is_set():
         return None
     # 최초 서버 준비는 완료한 후 취소 신호를 확인한다.
-    async with setting.configured_database(config, storage_path=path or config.SAVE_PATH) as connection:
+    async with db_connection.configured_database(config, storage_path=path or config.SAVE_PATH) as connection:
         if cancel_event.is_set():
             return None
         task = asyncio.create_task(collect_with_connection(connection, urls, ui_callback, file_logger))

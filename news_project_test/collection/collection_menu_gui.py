@@ -1,0 +1,83 @@
+"""메인 화면과 뉴스 수집 메뉴."""
+from PySide6.QtWidgets import QDialog, QLabel
+from init import config
+from style import page_layout, button, configure_window
+from collection.media_select_gui import MediaSelectionWindow
+from collection.collection_progress_gui import CrawlerProgressWindow
+
+class CollectionMenu(QDialog):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.setWindowTitle("뉴스 수집")
+        configure_window(self, "collection_menu")
+        self.worker_window = None
+        self.media_window = None
+        layout = page_layout(self, "뉴스 수집", "언론사를 선택하고 RSS 뉴스 수집을 시작하세요.")
+        self.summary = QLabel()
+        layout.addWidget(self.summary)
+        layout.addWidget(button("언론사 선택", self.select_media))
+        layout.addWidget(button("뉴스 수집 시작", self.start_collection, "primary"))
+        layout.addStretch()
+        layout.addWidget(button("닫기", self.close))
+        self.refresh_summary()
+
+    def refresh_summary(self):
+        names = list(getattr(config, "SELECTED_RSS", []))
+        self.summary.setText(f"선택한 언론사: {len(names)}개")
+        self.summary.setWordWrap(True)
+
+    def select_media(self):
+        if self.media_window is None:
+            self.media_window = MediaSelectionWindow(self.parentWidget())
+            self.media_window.finished.connect(self.on_media_closed)
+        self.media_window.show()
+        self.media_window.raise_()
+        self.media_window.activateWindow()
+
+    def on_media_closed(self):
+        dialog = self.media_window
+        self.media_window = None
+        self.refresh_summary()
+        if dialog:
+            dialog.deleteLater()
+
+    def start_collection(self):
+        if self.worker_window is not None:
+            self.worker_window.raise_()
+            self.worker_window.activateWindow()
+            return
+        # 숨길 메뉴를 native owner로 사용하지 않는다. 두 창은 메인 창의 형제다.
+        dialog = CrawlerProgressWindow(self.parentWidget())
+        if dialog.start():
+            self.worker_window = dialog
+            dialog.finished.connect(self.restore_collection_menu)
+            dialog.setModal(False)
+            self.hide()
+            dialog.show()
+            dialog.raise_()
+            dialog.activateWindow()
+        else:
+            dialog.deleteLater()
+
+    def restore_collection_menu(self):
+        dialog = self.worker_window
+        self.worker_window = None
+        self.refresh_summary()
+        self.show()
+        self.raise_()
+        self.activateWindow()
+        if dialog:
+            dialog.deleteLater()
+
+    def reject(self):
+        if self.worker_window and self.worker_window.is_collecting:
+            self.worker_window.stop_crawling()
+            return
+        super().reject()
+
+    def closeEvent(self, event):
+        if self.worker_window and self.worker_window.is_collecting:
+            self.worker_window.stop_crawling()
+            event.ignore()
+            return
+        super().closeEvent(event)
