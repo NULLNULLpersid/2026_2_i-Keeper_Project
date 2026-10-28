@@ -4,9 +4,9 @@ from __future__ import annotations
 import json
 from datetime import datetime
 
-from ..setting import validate_url
+from ..connection import validate_url
 from .save import ANALYSIS_TABLES, ISSUE_CHILDREN, _aware
-from ..table_manager import NEWS_UNION
+from ..news_archive import NEWS_UNION
 
 async def get_existing_urls(connection, urls) -> set[str]:
     """24시간 중복 검사 대상인 today_news에서 URL을 찾는다."""
@@ -29,14 +29,23 @@ async def get_last_news_time(connection, publisher_name: str):
 
 async def get_news(connection, news_id: int):
     row = await connection.fetchrow(
-        f"""SELECT n.*,p.name AS publisher_name FROM ({NEWS_UNION}) n
-            LEFT JOIN public.publishers p ON p.id=n.publisher_id WHERE n.news_id=$1""",
+        f"""SELECT n.*,n.label1_id AS category_id,p.name AS publisher_name,
+                   c1.name AS label1,c2.name AS label2 FROM ({NEWS_UNION}) n
+            LEFT JOIN public.publishers p ON p.id=n.publisher_id
+            LEFT JOIN public.categories c1 ON c1.id=n.label1_id
+            LEFT JOIN public.categories c2 ON c2.id=n.label2_id WHERE n.news_id=$1""",
         news_id,
     )
     return dict(row) if row else None
 
 async def list_news(connection, *, start=None, end=None, publisher_id=None,
-                    category_id=None, author=None, limit=100, offset=0):
+                    category_id=None, author=None, limit=100, offset=0,
+                    label1_id=None, label2_id=None):
+    """category_id는 두 라벨 중 하나라도 일치하면 조회한다.
+
+    label1_id/label2_id는 각각 첫/둘째 라벨을 지정한다. 여러 필터는 AND로 적용한다.
+    반환값에는 두 라벨 ID와 이름, 호환용 category_id(첫 라벨 ID)가 포함된다.
+    """
     if type(limit) is not int or not 1 <= limit <= 10000 or type(offset) is not int or offset < 0:
         raise ValueError("limit은 1~10000, offset은 0 이상의 정수여야 합니다.")
     if start is not None:
@@ -46,15 +55,20 @@ async def list_news(connection, *, start=None, end=None, publisher_id=None,
     if start is not None and end is not None and start >= end:
         raise ValueError("start는 end보다 빨라야 합니다.")
     rows = await connection.fetch(
-        f"""SELECT n.*,p.name AS publisher_name FROM ({NEWS_UNION}) n
+        f"""SELECT n.*,n.label1_id AS category_id,p.name AS publisher_name,
+                   c1.name AS label1,c2.name AS label2 FROM ({NEWS_UNION}) n
             LEFT JOIN public.publishers p ON p.id=n.publisher_id
+            LEFT JOIN public.categories c1 ON c1.id=n.label1_id
+            LEFT JOIN public.categories c2 ON c2.id=n.label2_id
             WHERE ($1::timestamptz IS NULL OR n.published_at >= $1)
               AND ($2::timestamptz IS NULL OR n.published_at < $2)
               AND ($3::bigint IS NULL OR n.publisher_id=$3)
-              AND ($4::bigint IS NULL OR n.category_id=$4)
+              AND ($4::bigint IS NULL OR n.label1_id=$4 OR n.label2_id=$4)
               AND ($5::text IS NULL OR n.author=$5)
+              AND ($8::bigint IS NULL OR n.label1_id=$8)
+              AND ($9::bigint IS NULL OR n.label2_id=$9)
             ORDER BY n.published_at DESC,n.news_id DESC LIMIT $6 OFFSET $7""",
-        start, end, publisher_id, category_id, author, limit, offset,
+        start, end, publisher_id, category_id, author, limit, offset, label1_id, label2_id,
     )
     return [dict(row) for row in rows]
 

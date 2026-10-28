@@ -3,7 +3,7 @@ from __future__ import annotations
 
 NEWS_WRITE_LOCK = 736204185903
 NEWS_COLUMNS = (
-    "news_id,publisher_id,category_id,title,url,"
+    "news_id,publisher_id,label1_id,label2_id,title,url,"
     "published_at,author,author_email,content,author_contacts"
 )
 NEWS_UNION = " UNION ALL ".join(

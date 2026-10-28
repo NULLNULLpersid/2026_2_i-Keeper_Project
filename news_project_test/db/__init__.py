@@ -6,9 +6,9 @@ from __future__ import annotations
 # 이 파일을 import하는 것만으로 서버를 가동하거나 DB에 접속하지 않는다.
 
 # 설정 모듈: 저장·중복 비교에 사용하는 HTTP(S) URL 형식 검사 기능(원본 유지).
-from .setting import validate_url
+from .connection import validate_url
 # 테이블 관리 모듈: 기사 발행시각에 따라 본문 테이블을 이동한다.
-from .table_manager import archive_news
+from .news_archive import archive_news
 # 저장 모듈: 기사·키워드·임베딩·학습 데이터·분석 결과 저장.
 # SaveResult는 기사 ID(news_id)와 신규 저장 여부(created)를 담는 반환 형식이다.
 from .pipeline.save import (
@@ -17,7 +17,7 @@ from .pipeline.save import (
     mark_analysis_failed,
 )
 # 조회 모듈: 중복 URL, 발행시각, 기사 본문 및 분석 관련 데이터 조회.
-from .pipeline.extract import (
+from .pipeline.load import (
     get_existing_urls, get_last_news_time, get_news, list_news, get_keywords,
     get_embedding, find_similar_news, get_analysis_results,
 )

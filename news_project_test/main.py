@@ -1,4 +1,4 @@
-"""PySide6 프로그램 실행 진입점."""
+"""PySide6 프로그램 실행 진입점. import 시 설치/DB 작업을 실행하지 않는다."""
 import sys
 
 def main():
@@ -11,9 +11,9 @@ def main():
 
     # PySide6 자동 설치와 import 검증이 끝난 뒤 GUI를 가져온다.
     from PySide6.QtWidgets import QApplication
-    from news_project_test.style import apply_theme
+    from style import apply_theme
     from main_gui import NewsApp
-    from init.init_gui import EnvChecker
+    from init.warning_gui import EnvChecker
     app = QApplication(sys.argv)
     app.setApplicationName("뉴스기사 수집 및 분석")
     apply_theme(app)
@@ -30,7 +30,7 @@ def main():
                 if hasattr(worker, "cancel_event"):
                     worker.cancel_event.set()
                 worker.wait()
-        from db.setting import shutdown_registered_servers
+        from db.connection import shutdown_registered_servers
         shutdown_registered_servers()
 
 if __name__ == "__main__":

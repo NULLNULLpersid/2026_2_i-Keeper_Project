@@ -6,8 +6,8 @@ import math
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
-from ..setting import ensure_embedding_partitions, validate_url
-from ..table_manager import NEWS_COLUMNS, NEWS_WRITE_LOCK
+from ..connection import ensure_embedding_partitions, validate_url
+from ..news_archive import NEWS_COLUMNS, NEWS_WRITE_LOCK
 
 @dataclass(frozen=True)
 class SaveResult:
@@ -140,10 +140,40 @@ async def save_embedding(connection, news_id: int, *, model_name: str, embedding
             raise ValueError("존재하지 않는 news_id입니다.")
         return await _save_embedding(connection, news_id, model_name, embedding)
 
+def _news_labels(*, label1, label2, label1_id, label2_id, category_id):
+    """문자열 라벨 또는 카테고리 ID 쌍을 검사한다. 동일한 두 라벨도 허용한다."""
+    for name, value in (('label1_id', label1_id), ('label2_id', label2_id),
+                        ('category_id', category_id)):
+        if value is not None and (type(value) is not int or not 1 <= value <= 9223372036854775807):
+            raise ValueError(f'{name}는 양의 BIGINT 정수 또는 None이어야 합니다.')
+    names = []
+    for name, value in (('label1', label1), ('label2', label2)):
+        if value is not None:
+            if not isinstance(value, str) or not 1 <= len(value.strip()) <= 20:
+                raise ValueError(f'{name}은 1~20자 카테고리 이름이어야 합니다.')
+            value = value.strip()
+        names.append(value)
+    label1, label2 = names
+    if category_id is not None:
+        if label1 is not None or (label1_id is not None and label1_id != category_id):
+            raise ValueError('category_id와 첫 번째 라벨을 다르게 지정할 수 없습니다.')
+        label1_id = category_id
+    if (label1 is not None and label1_id is not None) or (label2 is not None and label2_id is not None):
+        raise ValueError('같은 라벨의 이름과 ID를 동시에 지정하지 마세요.')
+    first = label1 if label1 is not None else label1_id
+    second = label2 if label2 is not None else label2_id
+    legacy_only = category_id is not None and label1 is None and second is None
+    if (first is None) != (second is None) and not legacy_only:
+        raise ValueError('분류 결과는 label1·label2 또는 label1_id·label2_id 두 개를 전달해야 합니다.')
+    return first, second
+
+
 async def save_news(
     connection, *, publisher_name: str, title: str, url: str,
     published_at: datetime, content: str,
     author: str | None = None, category_id: int | None = None,
+    label1: str | None = None, label2: str | None = None,
+    label1_id: int | None = None, label2_id: int | None = None,
     author_email: str | None = None, author_contacts=None,
     keywords=None, model_name: str | None = None, embedding=None,
 ) -> SaveResult:
@@ -151,8 +181,16 @@ async def save_news(
 
     author_email은 선택값이다. 수집한 작성자 이메일을 전달하면 저장하며,
     생략하거나 빈 문자열을 전달하면 NULL로 저장한다.
+    분류는 label1='정치', label2='경제' 또는 label1_id=1, label2_id=2로 전달한다.
+    문자열은 save_category()와 동일하게 최상위 카테고리 이름으로 등록/재사용한다.
+    하위 카테고리를 지정하려면 해당 ID 쌍을 전달한다. 같은 라벨 두 개도 허용한다.
+    미분류는 두 값 모두 생략한다. 구형 category_id는 첫 라벨로 호환 저장한다.
     """
     _aware(published_at)
+    first_label, second_label = _news_labels(
+        label1=label1, label2=label2, label1_id=label1_id,
+        label2_id=label2_id, category_id=category_id,
+    )
     if not isinstance(title, str) or not title.strip() or not isinstance(content, str) or not content.strip():
         raise ValueError("기사 제목과 본문이 필요합니다.")
     if author is not None and (not isinstance(author, str) or len(author) > 100):
@@ -183,6 +221,8 @@ async def save_news(
         if duplicate:
             return SaveResult(duplicate["news_id"], False)
 
+        label1_id = await save_category(connection, first_label) if isinstance(first_label, str) else first_label
+        label2_id = await save_category(connection, second_label) if isinstance(second_label, str) else second_label
         publisher_id = await _publisher_id(connection, publisher_name)
         news_id = await connection.fetchval("INSERT INTO public.news_id DEFAULT VALUES RETURNING id")
         stage = await connection.fetchval(
@@ -195,7 +235,7 @@ async def save_news(
         if table is None:
             raise RuntimeError(f"알 수 없는 본문 저장 단계: {stage!r}")
         columns = NEWS_COLUMNS
-        values = [news_id, publisher_id, category_id, title.strip(), source_url,
+        values = [news_id, publisher_id, label1_id, label2_id, title.strip(), source_url,
                   published_at, author, author_email, content.strip(), json.dumps(contacts, ensure_ascii=False)]
         placeholders = ",".join(f"${i}" for i in range(1, len(values) + 1))
         await connection.execute(

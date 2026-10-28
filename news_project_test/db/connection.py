@@ -7,14 +7,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
-# setting.py와 setting/을 함께 사용하기 위한 하위 모듈 검색 경로.
-__path__ = [str(Path(__file__).with_suffix(''))]
 
-from .setting.common import _LOGGER, _logged
-from .setting.server_init import step_1_prepare_server
-from .setting.server_create import step_2_connect_server, _verify_directory
-from .setting.server_shutdown import register_server_shutdown, stop_postgresql_server, shutdown_registered_servers
-from .setting.table_create import (
+from .setup.common import _LOGGER, _logged
+from .setup.server_init import step_1_prepare_server
+from .setup.database_connect import step_2_connect_server, _verify_directory
+from .setup.server_shutdown import register_server_shutdown, stop_postgresql_server, shutdown_registered_servers
+from .setup.table_setup import (
     TABLE_DEFINITIONS, ensure_embedding_partitions, step_3_prepare_tables, validate_schema,
 )
 
@@ -144,4 +142,4 @@ __all__ = [
     "validate_schema", "validate_url", "configured_database",
     "register_server_shutdown", "stop_postgresql_server", "shutdown_registered_servers",
 ]
-from .setting.common import LOG_PATH
+from .setup.common import LOG_PATH
