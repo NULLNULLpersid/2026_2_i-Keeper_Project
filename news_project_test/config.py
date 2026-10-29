@@ -50,8 +50,16 @@ MEDIA_RSS = {
 # 선택된 뉴스 RSS
 SELECTED_RSS = ["보안 뉴스"]
 
-# [설치된 라이브러리 확인]
+#############################
+# [라이브러리 확인]
+#############################
+
+# 설치한 라이브러리
 INSTALLED_LIBRARIES = ["PySide6", "aiohttp", "asyncpg", "pgvector", "feedparser", "trafilatura", "numpy", "kiwipiepy"]
 
-# [설정한 UI 테마 확인]
+#############################
+# [UI 테마 확인]
+#############################
+
+# 설정한 UI 테마
 UI_THEME = "light"

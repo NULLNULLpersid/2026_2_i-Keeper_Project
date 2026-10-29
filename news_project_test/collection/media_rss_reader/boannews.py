@@ -27,13 +27,13 @@ def clean_author(value):
 
 def extract_author(html, metadata=None, content=None):
     return common.extract_url_author(html, metadata, content, PUBLISHER_NAME, ALIASES,
-        extra_xpaths=("//*[@id="news_util"]", "//*[contains(@class,"writer")]",))
+        extra_xpaths=("//*[@id='news_util']", "//*[contains(@class,'writer')]",))
 
 
 def _class_xpath(class_name: str) -> str:
     return (
-        "contains(concat(" ", normalize-space(@class), " "), "
-        f"" {class_name} ")"
+        "contains(concat(' ', normalize-space(@class), ' '), "
+        f"' {class_name} ')"
     )
 
 
@@ -55,7 +55,8 @@ def _email_from_link(link) -> str | None:
 
 
 def extract_author_contacts(html: str | bytes, content=None) -> list[dict[str, str | None]]:
-    """article-writer 영역 안에서만 이름·이메일을 연결한다.
+    """
+    article-writer 영역 안에서만 이름·이메일을 연결한다.
 
     프로필 이미지, 다른 기사 링크, 페이지 하단의 대표/고충처리 이메일은 제외한다.
     작성자 영역이 없으면 빈 목록을 반환한다.
@@ -68,19 +69,19 @@ def extract_author_contacts(html: str | bytes, content=None) -> list[dict[str, s
         html = html.decode("utf-8", errors="replace")
     root = lxml_html.fromstring(html)
     articles = root.xpath(
-        f"descendant-or-self::article[{_class_xpath("article-writer")}]"
+        f"descendant-or-self::article[{_class_xpath('article-writer')}]"
     )
     contacts: list[dict[str, str | None]] = []
     seen: set[tuple[str, str | None]] = set()
     for article in articles:
-        blocks = article.xpath(f".//*[{_class_xpath("article-writer-content")}]")
+        blocks = article.xpath(f".//*[{_class_xpath('article-writer-content')}]")
         for block in blocks or [article]:
             names = list(dict.fromkeys(
-                name for node in block.xpath(f".//*[{_class_xpath("article-writer-name")}]")
+                name for node in block.xpath(f".//*[{_class_xpath('article-writer-name')}]")
                 if (name := _clean_name(node.text_content()))
             ))
             emails = list(dict.fromkeys(
-                email for link in block.xpath(f".//a[{_class_xpath("article-writer-mail")}]")
+                email for link in block.xpath(f".//a[{_class_xpath('article-writer-mail')}]")
                 if (email := _email_from_link(link))
             ))
             for name in names:

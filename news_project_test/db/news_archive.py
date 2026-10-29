@@ -7,12 +7,13 @@ NEWS_COLUMNS = (
     "published_at,author,author_email,content,author_contacts"
 )
 NEWS_UNION = " UNION ALL ".join(
-    f"SELECT {NEWS_COLUMNS},"{stage}"::text AS storage_type FROM public.{table}"
+    f"SELECT {NEWS_COLUMNS},'{stage}'::text AS storage_type FROM public.{table}"
     for table, stage in (("today_news", "today"), ("news", "news"), ("old_news", "old"))
 )
 
 async def archive_news(connection, *, batch_size: int = 1000) -> dict[str, int]:
-    """24시간 지난 기사를 news로, 3년 지난 기사를 old_news로 이동.
+    """
+    24시간 지난 기사를 news로, 3년 지난 기사를 old_news로 이동.
 
     이동은 published_at 기준이다. 한 번 호출할 때 각 단계에서 batch_size만큼
     이동하므로 대량 적체는 반환 건수가 0이 될 때까지 반복 호출하면 된다.
@@ -30,7 +31,7 @@ async def archive_news(connection, *, batch_size: int = 1000) -> dict[str, int]:
             moved = await connection.fetch(
                 f"""WITH candidates AS (
                        SELECT news_id FROM public.{source}
-                       WHERE published_at < CURRENT_TIMESTAMP-INTERVAL "{age}"
+                       WHERE published_at < CURRENT_TIMESTAMP-INTERVAL '{age}'
                        ORDER BY published_at,news_id
                        LIMIT $1 FOR UPDATE SKIP LOCKED
                    ), deleted AS (

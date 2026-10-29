@@ -20,4 +20,4 @@ def clean_author(value):
 
 def extract_author(html, metadata=None, content=None):
     return common.extract_url_author(html, metadata, content, PUBLISHER_NAME, ALIASES,
-        extra_xpaths=("//*[contains(@class,"author")]", "//*[contains(@class,"writer")]",))
+        extra_xpaths=("//*[contains(@class,'author')]", "//*[contains(@class,'writer')]",))

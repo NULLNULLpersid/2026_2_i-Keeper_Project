@@ -76,7 +76,7 @@ CREATE TABLE public.today_news (
     author VARCHAR(100),
 
     author_email TEXT,
-    author_contacts JSONB NOT NULL DEFAULT "[]"::jsonb,
+    author_contacts JSONB NOT NULL DEFAULT '[]'::jsonb,
 
     content TEXT NOT NULL
 );
@@ -105,7 +105,7 @@ CREATE TABLE public.news (
     author VARCHAR(100),
 
     author_email TEXT,
-    author_contacts JSONB NOT NULL DEFAULT "[]"::jsonb,
+    author_contacts JSONB NOT NULL DEFAULT '[]'::jsonb,
 
     content TEXT
 );
@@ -134,7 +134,7 @@ CREATE TABLE public.old_news (
     author VARCHAR(100),
 
     author_email TEXT,
-    author_contacts JSONB NOT NULL DEFAULT "[]"::jsonb,
+    author_contacts JSONB NOT NULL DEFAULT '[]'::jsonb,
 
     content TEXT
 );
@@ -145,7 +145,7 @@ CREATE TABLE public.news_location (
     news_id BIGINT PRIMARY KEY
         REFERENCES public.news_id(id),
 
-    storage_type VARCHAR CHECK(storage_type IN ("today", "news", "old"))
+    storage_type VARCHAR CHECK(storage_type IN ('today', 'news', 'old'))
 );
 """
 
@@ -206,7 +206,7 @@ CREATE TABLE public.learning_data_news (
 
     dataset_version VARCHAR,
 
-    data_split VARCHAR CHECK(data_split IN ("train", "valid", "test"))
+    data_split VARCHAR CHECK(data_split IN ('train', 'valid', 'test'))
 );
 """
 
@@ -218,7 +218,7 @@ CREATE TABLE analysis.analysis_runs (
 
     period_end TIMESTAMPTZ,
 
-    bucket_unit VARCHAR CHECK(bucket_unit IN ("hour", "day", "week", "month")),
+    bucket_unit VARCHAR CHECK(bucket_unit IN ('hour', 'day', 'week', 'month')),
 
     embedding_model_id SMALLINT
         REFERENCES public.embedding_models(id),
@@ -231,7 +231,7 @@ CREATE TABLE analysis.analysis_runs (
 
     request_hash BYTEA UNIQUE,
 
-    status VARCHAR CHECK(status IN ("running", "completed", "failed")),
+    status VARCHAR CHECK(status IN ('running', 'completed', 'failed')),
 
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
 
@@ -500,14 +500,14 @@ async def ensure_embedding_partitions(connection, years: Iterable[int]) -> None:
                 _LOGGER.info("기존 연도 파티션 확인: %s", name)
                 attached = await connection.fetchval("""SELECT EXISTS (
                     SELECT 1 FROM pg_inherits WHERE inhrelid=to_regclass($1)
-                    AND inhparent="public.news_embeddings"::regclass)""", name)
+                    AND inhparent='public.news_embeddings'::regclass)""", name)
                 if not attached:
                     raise RuntimeError(f"{name}은 임베딩 부모에 연결된 파티션이 아닙니다.")
 
 async def check_vector_extension(connection) -> None:
     """DB에 확장을 만들기 전에 PostgreSQL 서버의 설치 가능 목록을 확인한다."""
     available = await connection.fetchval(
-        "SELECT EXISTS (SELECT 1 FROM pg_available_extensions WHERE name="vector")"
+        "SELECT EXISTS (SELECT 1 FROM pg_available_extensions WHERE name='vector')"
     )
     if not available:
         version = await connection.fetchval("SHOW server_version")
@@ -530,7 +530,7 @@ async def step_3_prepare_tables(connection, years: Iterable[int]) -> None:
         await connection.execute("CREATE SCHEMA IF NOT EXISTS analysis")
         _LOGGER.info("pgvector 확장 확인 및 필요 시 생성")
         await connection.execute("CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public")
-        if await connection.fetchval("SELECT to_regtype("public.halfvec")") is None:
+        if await connection.fetchval("SELECT to_regtype('public.halfvec')") is None:
             raise RuntimeError("public 스키마에 pgvector >= 0.7의 halfvec 타입이 필요합니다.")
         for name, create_sql, indexes in TABLE_DEFINITIONS:
             if await connection.fetchval("SELECT to_regclass($1)", name) is None:
@@ -558,7 +558,7 @@ async def migrate_news_labels(connection) -> None:
         for table in ("today_news", "news", "old_news"):
             columns = {row["column_name"] for row in await connection.fetch(
                 "SELECT column_name FROM information_schema.columns "
-                "WHERE table_schema="public" AND table_name=$1", table,
+                "WHERE table_schema='public' AND table_name=$1", table,
             )}
             if "category_id" in columns and "label1_id" not in columns:
                 # RENAME은 기존 값과 외래키 연결을 함께 유지한다.
@@ -598,7 +598,7 @@ async def migrate_author_email(connection) -> None:
                 f"ALTER TABLE public.{table} ADD COLUMN IF NOT EXISTS author_email TEXT"
             )
             await connection.execute(
-                f"ALTER TABLE public.{table} ADD COLUMN IF NOT EXISTS author_contacts JSONB NOT NULL DEFAULT "[]"::jsonb"
+                f"ALTER TABLE public.{table} ADD COLUMN IF NOT EXISTS author_contacts JSONB NOT NULL DEFAULT '[]'::jsonb"
             )
 
 
@@ -626,10 +626,10 @@ async def migrate_original_urls(connection) -> None:
         await connection.execute("SELECT pg_advisory_xact_lock($1)", NEWS_WRITE_LOCK)
         legacy = await connection.fetchval("""SELECT EXISTS (
             SELECT 1 FROM information_schema.columns
-            WHERE table_schema="public"
-              AND table_name IN ("today_news","news","old_news")
-              AND column_name IN ("canonical_url","canonical_url_hash"))""")
-        index_exists = await connection.fetchval("SELECT to_regclass("public.uq_today_news_url")")
+            WHERE table_schema='public'
+              AND table_name IN ('today_news','news','old_news')
+              AND column_name IN ('canonical_url','canonical_url_hash'))""")
+        index_exists = await connection.fetchval("SELECT to_regclass('public.uq_today_news_url')")
         if not legacy and index_exists is not None:
             return
         await connection.execute("LOCK TABLE public.today_news, public.news, public.old_news IN ACCESS EXCLUSIVE MODE")

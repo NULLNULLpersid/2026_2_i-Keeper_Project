@@ -29,7 +29,6 @@ def parse_datetime(value):
         parsed = parsed.replace(tzinfo=KST)
     return parsed.astimezone(timezone.utc)
 
-
 def field(item, *names):
     """namespace와 CDATA 여부와 무관하게 지정한 직접 자식의 값을 읽는다."""
     for name in names:
@@ -45,7 +44,7 @@ def rss_items(payload):
     return [item for item in root.iter() if item.tag.rsplit("}", 1)[-1] == "item"]
 
 def clean_author(value, publisher, aliases=()):
-    """언론사명은 제외하고 작성자 표기의 "기자"와 이메일을 제거한다."""
+    """언론사명은 제외하고 작성자 표기의 '기자'와 이메일을 제거한다."""
     if isinstance(value, (list, tuple)):
         names = [clean_author(part, publisher, aliases) for part in value]
         return ", ".join(dict.fromkeys(name for name in names if name)) or None
@@ -89,14 +88,14 @@ def extract_url_author(html, metadata, content, publisher, aliases=(), extra_xpa
     except (ValueError, TypeError):
         return None
     for expression in (
-        "//meta[translate(@name,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz")="author"]/@content",
-        "//meta[@property="article:author"]/@content",
+        "//meta[translate(@name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='author']/@content",
+        "//meta[@property='article:author']/@content",
     ):
         for value in tree.xpath(expression):
             candidate = valid(value)
             if candidate:
                 return candidate
-    for script in tree.xpath("//script[@type="application/ld+json"]/text()"):
+    for script in tree.xpath("//script[@type='application/ld+json']/text()"):
         try:
             names = list(_json_authors(json.loads(script)))
         except (ValueError, TypeError):
@@ -105,8 +104,8 @@ def extract_url_author(html, metadata, content, publisher, aliases=(), extra_xpa
         if candidate:
             return candidate
     expressions = (*extra_xpaths,
-        "//*[contains(concat(" ",normalize-space(@class)," ")," byline ")]",
-        "//*[contains(concat(" ",normalize-space(@class)," ")," reporter ")]")
+        "//*[contains(concat(' ',normalize-space(@class),' '),' byline ')]",
+        "//*[contains(concat(' ',normalize-space(@class),' '),' reporter ')]")
     for expression in expressions:
         for node in tree.xpath(expression):
             value = node.text_content() if hasattr(node, "text_content") else str(node)
@@ -125,10 +124,11 @@ def _byline(value, valid):
     match = re.fullmatch(r"([가-힣]{2,5}(?:\s*(?:,|·|/)?\s*[가-힣]{2,5}){0,4})\s*(기자|특파원)(?:\s+[\w.+-]+@[\w.-]+)?", value)
     return valid(f"{match[1]} {match[2]}") if match else None
 
-_EMAIL = re.compile(r"[A-Za-z0-9.!#$%&"*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\.[A-Za-z]{2,}")
+_EMAIL = re.compile(r"[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\.[A-Za-z]{2,}")
 
 def extract_author_contacts(html, content=None):
-    """작성자 영역에서 확인되는 이름·이메일 쌍만 반환한다.
+    """
+    작성자 영역에서 확인되는 이름·이메일 쌍만 반환한다.
 
     공용 연락처나 본문 속 제보 이메일은 사용하지 않는다. 공동 기자명에
     이메일 하나만 표시되면 누구의 주소인지 추측하지 않는다.
@@ -167,7 +167,7 @@ def extract_author_contacts(html, content=None):
                 if key != "author":
                     walk(child)
 
-    for script in tree.xpath("//script[@type="application/ld+json"]/text()"):
+    for script in tree.xpath("//script[@type='application/ld+json']/text()"):
         try:
             walk(json.loads(script))
         except (ValueError, TypeError):
@@ -175,13 +175,13 @@ def extract_author_contacts(html, content=None):
 
     # 독립된 기자 표기만 인정한다. 각 기자가 별도 줄/요소로 표시되면 각각 저장한다.
     lines = list((content or "").splitlines()[-10:])
-    for node in tree.xpath("//*[contains(@class,"author") or contains(@class,"writer") "
-                           "or contains(@class,"byline") or contains(@class,"reporter") "
-                           "or @id="news_util"]"):
+    for node in tree.xpath("//*[contains(@class,'author') or contains(@class,'writer') "
+                           "or contains(@class,'byline') or contains(@class,'reporter') "
+                           "or @id='news_util']"):
         if node.xpath("ancestor::footer"):
             continue
         lines.extend(node.text_content().splitlines())
-        for link in node.xpath(".//a[starts-with(@href,"mailto:")]"):
+        for link in node.xpath(".//a[starts-with(@href,'mailto:')]"):
             label = link.text_content().strip()
             address = link.get("href")[7:].split("?")[0]
             if re.fullmatch(r"[가-힣]{2,5}", label):

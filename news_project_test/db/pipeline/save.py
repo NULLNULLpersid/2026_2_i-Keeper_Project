@@ -177,11 +177,12 @@ async def save_news(
     author_email: str | None = None, author_contacts=None,
     keywords=None, model_name: str | None = None, embedding=None,
 ) -> SaveResult:
-    """언론사, 영구 ID, 본문 단계, 위치 및 선택 부가 데이터를 한 트랜잭션에 저장.
+    """
+    언론사, 영구 ID, 본문 단계, 위치 및 선택 부가 데이터를 한 트랜잭션에 저장.
 
     author_email은 선택값이다. 수집한 작성자 이메일을 전달하면 저장하며,
     생략하거나 빈 문자열을 전달하면 NULL로 저장한다.
-    분류는 label1="정치", label2="경제" 또는 label1_id=1, label2_id=2로 전달한다.
+    분류는 label1='정치', label2='경제' 또는 label1_id=1, label2_id=2로 전달한다.
     문자열은 save_category()와 동일하게 최상위 카테고리 이름으로 등록/재사용한다.
     하위 카테고리를 지정하려면 해당 ID 쌍을 전달한다. 같은 라벨 두 개도 허용한다.
     미분류는 두 값 모두 생략한다. 구형 category_id는 첫 라벨로 호환 저장한다.
@@ -227,9 +228,9 @@ async def save_news(
         news_id = await connection.fetchval("INSERT INTO public.news_id DEFAULT VALUES RETURNING id")
         stage = await connection.fetchval(
             """SELECT CASE
-                 WHEN $1::timestamptz >= CURRENT_TIMESTAMP-INTERVAL "24 hours" THEN "today"
-                 WHEN $1::timestamptz >= CURRENT_TIMESTAMP-INTERVAL "3 years" THEN "news"
-                 ELSE "old" END""", published_at,
+                 WHEN $1::timestamptz >= CURRENT_TIMESTAMP-INTERVAL '24 hours' THEN 'today'
+                 WHEN $1::timestamptz >= CURRENT_TIMESTAMP-INTERVAL '3 years' THEN 'news'
+                 ELSE 'old' END""", published_at,
         )
         table = {"today": "today_news", "news": "news", "old": "old_news"}.get(stage)
         if table is None:
@@ -297,7 +298,7 @@ async def create_analysis_run(connection, *, period_start, period_end, bucket_un
             """INSERT INTO analysis.analysis_runs
                (period_start,period_end,bucket_unit,embedding_model_id,filters,
                 algorithm_name,algorithm_version,request_hash,status)
-               VALUES($1,$2,$3,$4,$5::jsonb,$6,$7,$8,"running")
+               VALUES($1,$2,$3,$4,$5::jsonb,$6,$7,$8,'running')
                ON CONFLICT(request_hash) DO NOTHING RETURNING id""",
             period_start, period_end, bucket_unit, embedding_model_id,
             json.dumps(filters or {}, ensure_ascii=False), algorithm_name,
@@ -321,7 +322,8 @@ async def _insert_analysis_rows(connection, table, owner_column, owner_id, colum
         )
 
 async def save_analysis_results(connection, analysis_id: int, results: dict) -> None:
-    """분석 통계, 이슈, 이슈 구성원 및 추이를 원자적으로 저장한다.
+    """
+    분석 통계, 이슈, 이슈 구성원 및 추이를 원자적으로 저장한다.
 
     입력은 외부 분석기가 계산한 값이다. overview는 dict, 각 통계와 issues는
     list[dict]를 받으며 issue 항목에는 members/keywords/timeseries를 넣을 수 있다.
@@ -362,12 +364,12 @@ async def save_analysis_results(connection, analysis_id: int, results: dict) -> 
                     connection, table, "issue_id", issue_id, columns, issue.get(key, []),
                 )
         await connection.execute(
-            """UPDATE analysis.analysis_runs SET status="completed",
+            """UPDATE analysis.analysis_runs SET status='completed',
                completed_at=CURRENT_TIMESTAMP WHERE id=$1""", analysis_id,
         )
 
 async def mark_analysis_failed(connection, analysis_id: int) -> None:
     await connection.execute(
-        """UPDATE analysis.analysis_runs SET status="failed",completed_at=CURRENT_TIMESTAMP
-           WHERE id=$1 AND status="running"""", analysis_id,
+        """UPDATE analysis.analysis_runs SET status='failed',completed_at=CURRENT_TIMESTAMP
+           WHERE id=$1 AND status='running'""", analysis_id,
     )
